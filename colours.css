@@ -1,9 +1,19 @@
 body
 {
-	background:#000000;
+	background:#0ff000;
 }
 
-canvas
+#matrix
 {
-	background:#333333;
+	background:#6aa8ff;
+	width: 800px;
+	height: 600px;
+}
+
+.button2
+{
+	background:#FF00FF;
+	width:100px;
+	height:100px;
+
 }
