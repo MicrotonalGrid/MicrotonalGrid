@@ -8,12 +8,14 @@ body
 	background:#6aa8ff;
 	width: 800px;
 	height: 600px;
+	
 }
 
-.button2
+.matrixButton
 {
 	background:#FF00FF;
-	width:100px;
-	height:100px;
+	width:10px;
+	height:10px;
+	position:relative;
 
 }
