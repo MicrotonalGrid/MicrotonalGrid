@@ -5,7 +5,7 @@ onOff.style.right =0;
 onOff.className = "matrixButtOff";
 onOff.addEventListener('click',unmute, false);
 document.getElementById("matrix").appendChild(onOff);   
-let virgin = true;       
+let initialised = true;       
 
 
 let AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -29,12 +29,12 @@ buttons[4][5].className = 'matrixButtOn';
 
 function unmute(event)
 {
-  if(virgin ===true)
+  if(initialised ===true)
   {
 	for(var i = 0; i<oscArray.length ; i++)
 	{
 		oscArray[i].start();
-		virgin = false;
+		initialised = false;
 	}
   }
   if(this.className == 'matrixButtOff')
