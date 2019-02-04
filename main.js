@@ -25,8 +25,6 @@ console.log(oscArray.length);
 let buttons = new Array;
 createGrid(buttons);
 
-buttons[4][5].className = 'matrixButtOn';
-
 function unmute(event)
 {
   if(initialised ===true)
