@@ -31,27 +31,27 @@ function unmute(event)
 {
   if(initialised ===true)
   {
-	for(var i = 0; i<oscArray.length ; i++)
-	{
-		oscArray[i].start();
-		initialised = false;
-	}
+	  for(var i = 0; i<oscArray.length ; i++)
+	  {
+		  oscArray[i].start();
+		  initialised = false;
+	  }
   }
   if(this.className == 'matrixButtOff')
   {
-	this.className = 'matrixButtOn';
-	for(var i = 0; i<oscArray.length ; i++)
-	{
-		oscArray[i].connect(audioCtx.destination);
-	}    
+	  this.className = 'matrixButtOn';
+	  for(var i = 0; i<oscArray.length ; i++)
+	  {
+		  oscArray[i].connect(audioCtx.destination);
+	  }    
   }
   else
   {
     this.className = 'matrixButtOff';
-	for(var i = 0; i<oscArray.length ; i++)
-	{
-		oscArray[i].disconnect(audioCtx.destination);
-	}
+	  for(var i = 0; i<oscArray.length ; i++)
+	  {
+		  oscArray[i].disconnect(audioCtx.destination);
+	  }
   }
 }
 
