@@ -5,17 +5,25 @@ body
 
 #matrix
 {
+	position: relative;
 	background:#6aa8ff;
 	width: 800px;
 	height: 600px;
 	
 }
 
-.matrixButton
+.matrixButtOn
 {
-	background:#FF00FF;
-	width:10px;
-	height:10px;
-	position:relative;
+	background:#FFFFFF;
+	width:25px;
+	height:25px;
+	position:absolute;
+}
 
+.matrixButtOff
+{
+	background:#000000;
+	width:25px;
+	height:25px;
+	position:absolute;
 }
