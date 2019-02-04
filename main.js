@@ -15,8 +15,12 @@ let oscArray = new Array;
 for(var i = 0; i<16 ; i++)
 {
   oscArray.push(audioCtx.createOscillator());
+  let freq = 220 * Math.pow( 2 , (i/12)); //replace 2 and 12 with subdivs and octave size in the future
+  oscArray[i].frequency.setValueAtTime(freq, audioCtx.currentTime);
+  console.log(oscArray.length);
   //let osc = audioCtx.createOscillator();
 }
+console.log(oscArray.length);
 
 let buttons = new Array;
 createGrid(buttons);
@@ -27,20 +31,27 @@ function unmute(event)
 {
   if(virgin ===true)
   {
-    osc.start();
-    virgin = false;
+	for(var i = 0; i<oscArray.length ; i++)
+	{
+		oscArray[i].start();
+		virgin = false;
+	}
   }
   if(this.className == 'matrixButtOff')
   {
-    this.className = 'matrixButtOn';
-    osc.connect(audioCtx.destination);
-    
+	this.className = 'matrixButtOn';
+	for(var i = 0; i<oscArray.length ; i++)
+	{
+		oscArray[i].connect(audioCtx.destination);
+	}    
   }
   else
   {
     this.className = 'matrixButtOff';
-    
-    osc.disconnect(audioCtx.destination);
+	for(var i = 0; i<oscArray.length ; i++)
+	{
+		oscArray[i].disconnect(audioCtx.destination);
+	}
   }
 }
 
