@@ -78,7 +78,7 @@ function chord(event)
 	  this.className = 'matrixButtOn';
 	  for(var i = 0; i<oscArray.length ; i++)
 	  {
-      if(buttons[i][0].className == 'matrixButtOn')
+      if(buttons[0][i].className == 'matrixButtOn')
 		  {oscArray[i].connect(audioCtx.destination);}
 	  }    
   }
@@ -87,7 +87,7 @@ function chord(event)
     this.className = 'matrixButtOff';
 	  for(var i = 0; i<oscArray.length ; i++)
 	  {
-      if(buttons[i][0].className == 'matrixButtOn')
+      if(buttons[0][i].className == 'matrixButtOn')
 		  {oscArray[i].disconnect(audioCtx.destination);}
 	  }
   }
