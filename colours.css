@@ -27,3 +27,11 @@ body
 	height:25px;
 	position:absolute;
 }
+
+.scrubber
+{
+	background:#FF0000;
+	width:30px;
+	height:600px;
+	position:absolute;
+}
