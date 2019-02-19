@@ -129,5 +129,6 @@ function incrementBar()
 
 function resetBar()
 {
+	//test commit
 	scrubber.style.left = '65px';
 }
