@@ -35,3 +35,11 @@ body
 	height:600px;
 	position:absolute;
 }
+
+.beginButton 
+{
+	background:#300030;
+	width:800px;
+	height:600px;
+	position:absolute;
+}

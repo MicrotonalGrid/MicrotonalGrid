@@ -5,7 +5,7 @@ onOff.style.right =0;
 onOff.className = "matrixButtOff";
 onOff.addEventListener('click',unmute, false);
 document.getElementById("matrix").appendChild(onOff);   
-let initialised = false;       
+let initialised = true;       
 
 
 let playChord = document.createElement("div"); //button to play a chord on the leftmost side, for experimenting.
@@ -21,7 +21,7 @@ scrubber.style.left = 65;
 scrubber.className = 'scrubber';
 document.getElementById("matrix").appendChild(scrubber); 
 
-let currentIteration = 0;
+let vez = 0;
 
 setInterval(eachTick, 500);
 
@@ -44,14 +44,36 @@ console.log(oscArray.length);
 let buttons = new Array;
 createGrid(buttons);
 
+let startButton = document.createElement("div")   //begin setup
+startButton.style.bottom = 0;
+startButton.style.left = 0;
+startButton.className = 'beginButton'; //todo change this to ID after internet connection
+startButton.addEventListener('click',start, false);
+document.getElementById("matrix").appendChild(startButton); 
+
+function start()
+{
+	if(initialised ===true)
+  	{
+	  for(var i = 0; i<oscArray.length ; i++)
+	  {
+		  oscArray[i].start();
+		  initialised = false;
+	  }
+  	}
+  	console.log("REMOVED");
+
+  	document.getElementById("matrix").getElementsByClass("beginButton").remove(); //fix this
+}
+
 function unmute(event)
 {
-  if(initialised ===false)
+  if(initialised ===true)
   {
 	  for(var i = 0; i<oscArray.length ; i++)
 	  {
 		  oscArray[i].start();
-		  initialised = true;
+		  initialised = false;
 	  }
   }
   if(this.className == 'matrixButtOff')
@@ -76,12 +98,12 @@ function unmute(event)
 
 function chord(event)
 {
-  if(initialised ===false)
+  if(initialised ===true)
   {
 	  for(var i = 0; i<oscArray.length ; i++)
 	  {
 		  oscArray[i].start();
-		  initialised = true;
+		  initialised = false;
 	  }
   }
   if(this.className == 'matrixButtOff')
@@ -108,26 +130,23 @@ function eachTick()
 {
 	if(parseInt(scrubber.style.left.substring(0,scrubber.style.left.length-2)) < 600)
 	{
-		this.incrementBar();
+		let tem = scrubber.style.left.substring(0,scrubber.style.left.length-2);
+		tem = parseInt(tem)+37.9;
+		tem += "px";
+		//console.log("TEM "  + tem);
+		scrubber.style.left = tem;
+
+		///console.log("A : " + scrubber.style.left.substring(0,scrubber.style.left.length-2));
+		//scrubber.style.left = parseInt(scrubber.style.left.substring(0,scrubber.length-2),10) + 30; 
+		///console.log('c : ' + scrubber.style.left);
+		//scrubber.style.left +="px"
+
 	}
 	else
 	{
-		this.resetBar();
+		scrubber.style.left = '65px';
 	}
-
-	
+	vez++;
+	//console.log('B : ' + scrubber.style.left);
 }
 
-function incrementBar()
-{
-	let tem = scrubber.style.left.substring(0,scrubber.style.left.length-2);
-		tem = parseInt(tem)+37.9;
-		tem += "px";
-		console.log("TEM "  + tem);
-		scrubber.style.left = tem;
-}
-
-function resetBar()
-{
-	scrubber.style.left = '65px';
-}
