@@ -1,133 +1,70 @@
 
-let onOff = document.createElement("div");  //mute button & activation
+let onOff = document.createElement("div");
 onOff.style.bottom = 0;
 onOff.style.right =0;
 onOff.className = "matrixButtOff";
 onOff.addEventListener('click',unmute, false);
 document.getElementById("matrix").appendChild(onOff);   
-let initialised = false;       
-
-
-let playChord = document.createElement("div"); //button to play a chord on the leftmost side, for experimenting.
-playChord.style.bottom = 400;
-playChord.style.right =0;
-playChord.className = "matrixButtOff";
-playChord.addEventListener('click',chord, false);
-document.getElementById("matrix").appendChild(playChord); 
-
-let scrubber = document.createElement("div")   //scrubber setup
-scrubber.style.bottom = 0;
-scrubber.style.left = 65;
-scrubber.className = 'scrubber';
-document.getElementById("matrix").appendChild(scrubber); 
-
-let currentIteration = 0;
-
-setInterval(eachTick, 500);
-
+let virgins = new Array;       
 
 
 let AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx = new AudioContext();
 let oscArray = new Array;
+let numClicked = 0;
+let rootNote = 220;
+let subdivisions = 12;
+let offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+let octave = 2;
 
 for(var i = 0; i<16 ; i++)
 {
-  oscArray.push(audioCtx.createOscillator());
-  let freq = 440 * Math.pow( 2 , (i/12)); //replace 2 and 12 with subdivs and octave size in the future
-  oscArray[i].frequency.setValueAtTime(freq, audioCtx.currentTime);
-  console.log(oscArray.length);
+  let currentOsc = audioCtx.createOscillator();
+  currentOsc.frequency.setValueAtTime (Math.pow(octave, (offsets[i]) / subdivisions) * rootNote ,audioCtx.currentTime)   //rootNote*numClicked;
+  currentOsc.startedAlready = false;
+  oscArray.push(currentOsc);//audioCtx.createOscillator());
+  virgins.push(true);
   //let osc = audioCtx.createOscillator();
 }
-console.log(oscArray.length);
 
 let buttons = new Array;
 createGrid(buttons);
 
+buttons[4][5].className = 'matrixButtOn';
+
 function unmute(event)
 {
-  if(initialised ===false)
+  console.log("in unmute event");
+  console.log(event);
+  console.log("numClicked : " + numClicked);
+
+  // console.log("freq b4: " + oscArray[numClicked].frequency );
+  // oscArray[numClicked].frequency.setValueAtTime ( rootNote*numClicked,audioCtx.currentTime);
+  // console.log("freq after: " + oscArray[numClicked].frequency );
+ 
+  if(virgins[numClicked] ===true)
   {
-	  for(var i = 0; i<oscArray.length ; i++)
-	  {
-		  oscArray[i].start();
-		  initialised = true;
-	  }
+
+    oscArray[numClicked].start();
+    virgins[numClicked] = false;
   }
   if(this.className == 'matrixButtOff')
   {
-	  this.className = 'matrixButtOn';
-	  for(var i = 0; i<oscArray.length ; i++)
-	  {
-		  oscArray[i].connect(audioCtx.destination);
-	  }    
+    this.className = 'matrixButtOn';
+    oscArray[numClicked].connect(audioCtx.destination);
+    
   }
   else
   {
     this.className = 'matrixButtOff';
-	  for(var i = 0; i<oscArray.length ; i++)
-	  {
-		  oscArray[i].disconnect(audioCtx.destination);
-	  }
+    
+    oscArray[numClicked].disconnect(audioCtx.destination);
+    numClicked = numClicked <15 ? numClicked +1 : 0;
+
   }
+
+
 }
 
 
 
-function chord(event)
-{
-  if(initialised ===false)
-  {
-	  for(var i = 0; i<oscArray.length ; i++)
-	  {
-		  oscArray[i].start();
-		  initialised = true;
-	  }
-  }
-  if(this.className == 'matrixButtOff')
-  {
-	  this.className = 'matrixButtOn';
-	  for(var i = 0; i<oscArray.length ; i++)
-	  {
-      if(buttons[0][i].className == 'matrixButtOn')
-		  {oscArray[i].connect(audioCtx.destination);}
-	  }    
-  }
-  else
-  {
-    this.className = 'matrixButtOff';
-	  for(var i = 0; i<oscArray.length ; i++)
-	  {
-      if(buttons[0][i].className == 'matrixButtOn')
-		  {oscArray[i].disconnect(audioCtx.destination);}
-	  }
-  }
-}
-
-function eachTick()
-{
-	if(parseInt(scrubber.style.left.substring(0,scrubber.style.left.length-2)) < 600)
-	{
-		this.incrementBar();
-	}
-	else
-	{
-		this.resetBar();
-	}
-
-	
-}
-
-function incrementBar()
-{
-	let tem = scrubber.style.left.substring(0,scrubber.style.left.length-2);
-		tem = parseInt(tem)+37.9;
-		tem += "px";
-		console.log("TEM "  + tem);
-		scrubber.style.left = tem;
-}
-
-function resetBar()
-{
-	scrubber.style.left = '65px';
-}
