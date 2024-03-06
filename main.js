@@ -17,6 +17,17 @@ let subdivisions = 12;
 let offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 let octave = 2;
 
+
+let scrubber = document.createElement("div")   //scrubber setup
+scrubber.style.bottom = 0;
+scrubber.style.left = 65;
+scrubber.className = 'scrubber';
+document.getElementById("matrix").appendChild(scrubber); 
+
+let currentIteration = 0;
+
+setInterval(eachTick, 500);
+
 for(var i = 0; i<16 ; i++)
 {
   let currentOsc = audioCtx.createOscillator();
@@ -65,6 +76,37 @@ function unmute(event)
 
 
 }
+
+
+function eachTick()
+{
+	if(parseInt(scrubber.style.left.substring(0,scrubber.style.left.length-2)) < 600)
+	{
+		this.incrementBar();
+	}
+	else
+	{
+		this.resetBar();
+	}
+
+	
+}
+
+function incrementBar()
+{
+	let tem = scrubber.style.left.substring(0,scrubber.style.left.length-2);
+		tem = parseInt(tem)+37.9;
+		tem += "px";
+		console.log("TEM "  + tem);
+		scrubber.style.left = tem;
+}
+
+function resetBar()
+{
+	//test commit
+	scrubber.style.left = '65px';
+}
+
 
 
 
