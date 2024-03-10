@@ -2,7 +2,8 @@
 let onOff = document.createElement("div");
 onOff.style.bottom = 0;
 onOff.style.right =0;
-onOff.className = "matrixButtOff";
+onOff.textContent = "PLAY";
+onOff.className = "playButton";
 onOff.addEventListener('click',unmute, false);
 document.getElementById("matrix").appendChild(onOff);   
 let previousState = new Array;     
@@ -30,7 +31,7 @@ document.getElementById("matrix").appendChild(scrubber);
 let currentIteration = 0;
 let previousIteration = 15; 
 
-setInterval(eachTick, 250);
+setInterval(eachTick, 125);
 
 let buttons = new Array;
 createGrid(buttons);
@@ -77,26 +78,9 @@ function unmute(event)
     });
     virgin = false;
   }
-  // if(virgins[numClicked] ===true)
-  // {
-
-  //   oscArray[numClicked].start();
-  //   virgins[numClicked] = false;
-  // }
-  // if(this.className == 'matrixButtOff')
-  // {
-  //   this.className = 'matrixButtOn';
-  //   oscArray[numClicked].connect(audioCtx.destination);
-    
-  // }
-  // else
-  // {
-  //   this.className = 'matrixButtOff';
-    
-  //   oscArray[numClicked].disconnect(audioCtx.destination);
-  //   numClicked = numClicked <15 ? numClicked +1 : 0;
-
-  // }
+ 
+  event.target.className = "playButtoff";
+  event.target.textContent = "";
 
 
 }
