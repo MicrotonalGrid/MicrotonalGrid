@@ -28,8 +28,13 @@ function onMouseOver(event)
     
   }
 }
-
-function createGrid(buttons)
+/***
+ * 
+ * Gets passed an existing array and appends a grid of buttons with turn on off functionality, which 
+ * can then be manipulated where it is created by referencing the array passed in out there
+ * 
+ */
+function createGrid(buttons) 
 {
   for (var j = 0; j < 16 ; j++)
   {

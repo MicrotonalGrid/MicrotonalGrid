@@ -12,6 +12,7 @@ let virgin = true;
 
 
 
+
 let AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx = new AudioContext();
 let oscArray = new Array;
@@ -39,7 +40,7 @@ createGrid(buttons);
 for(var i = 0; i<16 ; i++)
 {
   let currentOsc = audioCtx.createOscillator();
-  currentOsc.frequency.setValueAtTime (Math.pow(octave, (offsets[i]) / subdivisions) * rootNote ,audioCtx.currentTime)   //rootNote*numClicked;
+  currentOsc.frequency.setValueAtTime (Math.pow(octave, (offsets[i]) / subdivisions) * rootNote ,audioCtx.currentTime);
   currentOsc.startedAlready = false;
   oscArray.push(currentOsc);
   previousState.push(false);
@@ -57,6 +58,7 @@ function unmute(event)
     });
     virgin = false;
   } 
+  testLog();
   event.target.className = "playButtoff";
   event.target.textContent = "";
 }
