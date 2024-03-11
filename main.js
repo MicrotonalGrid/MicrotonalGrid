@@ -15,7 +15,7 @@ import SwitchSynth from "./switchSynth.js"
   let virgins = new Array;     
   let virgin = true;       
 
-  //let mySynth = SwitchSynth;
+  let mySynth = new SwitchSynth;
   //let testFuck = new test;
 
 
@@ -63,6 +63,7 @@ import SwitchSynth from "./switchSynth.js"
       });
       virgin = false;
     } 
+    mySynth.testLog();
     //testFuck.testX();
     // console.log(testFuck);
     // console.log(testFuck.testLog());
