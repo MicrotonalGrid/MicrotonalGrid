@@ -44,8 +44,8 @@ function createGrid(buttons)
     {
           
       buttons[j].push(document.createElement("div"));
-      buttons[j][i].style.bottom = (i * 37.5) + 5.5;
-      buttons[j][i].style.right = (700- (j * 37.5) + 7.5);
+      buttons[j][i].style.bottom = String((i * 37.5) + 5.5)+"px";
+      buttons[j][i].style.right = String((700- (j * 37.5) + 7.5))+"px";
     
       buttons[j][i].id = "button"+i+j;
       buttons[j][i].className = "matrixButtOff";

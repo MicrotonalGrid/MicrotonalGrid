@@ -1,4 +1,17 @@
-function testLog()
+export default class SwitchSynth
 {
-    console.log("importsuccess");
+    switchSynth()
+    {
+        console.log("created class");
+    }
+    mySynth()
+    {
+        return'';
+    }
+
+    testLog()
+    {
+        console.log("importsuccess");
+    }
+
 }

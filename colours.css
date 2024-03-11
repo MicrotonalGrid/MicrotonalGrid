@@ -43,8 +43,8 @@ body
 .playButtoff
 {
 	background:#000000;
-	width:0;
-	height:0;
+	width:0px;
+	height:0px;
 	position:absolute;
 	z-index:-2;
 }
