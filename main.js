@@ -1,7 +1,3 @@
-// import SwitchSynth  from "./switchSynth.js"
-//import {testFunction as testFunction}  from './test.js'
- 
-//import test from "./test.js"
 import SwitchSynth from "./switchSynth.js"
 {
   let onOff = document.createElement("div");
@@ -10,22 +6,14 @@ import SwitchSynth from "./switchSynth.js"
   onOff.textContent = "PLAY";
   onOff.className = "playButton";
   onOff.addEventListener('click',unmute, false);
-  document.getElementById("matrix").appendChild(onOff);   
-  let previousState = new Array;     
-  let virgin = true;       
+  document.getElementById("matrix").appendChild(onOff);        
 
-
-
-  // let AudioContext = window.AudioContext || window.webkitAudioContext;
-  // let audioCtx = new AudioContext();
-  // let oscArray = new Array;
   let rootNote = 220;
   let subdivisions = 12;
   let offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
   let octave = 2;
 
   let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave);
-
 
   let scrubber = document.createElement("div")   //scrubber setup
   scrubber.style.bottom = 0;
@@ -43,18 +31,8 @@ import SwitchSynth from "./switchSynth.js"
 
   mySynth.createOscillators();
 
-
-
   function unmute(event)
   { 
-    // if(virgin == true)
-    // {
-    //   oscArray.forEach(osc => 
-    //   {
-    //     osc.start();
-    //   });
-    //   virgin = false;
-    // } 
     mySynth.startOscillators();
     event.target.className = "playButtoff";
     event.target.textContent = "";
@@ -62,34 +40,32 @@ import SwitchSynth from "./switchSynth.js"
 
   function unmuteSelectedNotes()
   {
-    console.log("in unmute");
-    // if (virgin == true)
-    // {
-    //   console.log("forever virgin");
-    //   return;
-    // }
     buttons[currentIteration].forEach(button => 
     {
       let currentIndex =   buttons[currentIteration].indexOf(button);
-      //console.log("current index : " + currentIndex);
-      if(button.className != 'matrixButtOff' && (buttons[previousIteration][currentIndex].className == 'matrixButtOff' || mySynth.oscillatorState[currentIndex] == false  )){
-        //oscArray[currentIndex].connect(audioCtx.destination);
+      if(button.className != 'matrixButtOff' 
+        &&(
+            buttons[previousIteration][currentIndex].className == 'matrixButtOff' 
+            || mySynth.oscillatorState[currentIndex] == false  
+          )
+        )
+      {
         mySynth.connectSpecificOscillator(currentIndex);
       }
-      else if (button.className == 'matrixButtOff' && (buttons[previousIteration][currentIndex].className == 'matrixButtOn' || mySynth.oscillatorState[currentIndex] == true  ))
+      else if (button.className == 'matrixButtOff' 
+                && (
+                  buttons[previousIteration][currentIndex].className == 'matrixButtOn' 
+                  || mySynth.oscillatorState[currentIndex] == true  
+                )
+              )
       {
         mySynth.disconnectSpecificOscillator(currentIndex);
-
-        //oscArray[currentIndex].disconnect(audioCtx.destination);
       }
     });
   }
 
-
   function eachTick()
   {
- 
-
     if(parseInt(scrubber.style.left.substring(0,scrubber.style.left.length-2)) < 600)
     {
       currentIteration++;
@@ -102,10 +78,7 @@ import SwitchSynth from "./switchSynth.js"
       updatePreviousIteration();
       resetBar();
     }
- 
     unmuteSelectedNotes();
- 
-
   }
 
   function incrementBar()
