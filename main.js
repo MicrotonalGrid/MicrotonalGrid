@@ -12,20 +12,19 @@ import SwitchSynth from "./switchSynth.js"
   onOff.addEventListener('click',unmute, false);
   document.getElementById("matrix").appendChild(onOff);   
   let previousState = new Array;     
-  let virgins = new Array;     
   let virgin = true;       
 
-  let mySynth = new SwitchSynth;
-  //let testFuck = new test;
 
 
-  let AudioContext = window.AudioContext || window.webkitAudioContext;
-  let audioCtx = new AudioContext();
-  let oscArray = new Array;
+  // let AudioContext = window.AudioContext || window.webkitAudioContext;
+  // let audioCtx = new AudioContext();
+  // let oscArray = new Array;
   let rootNote = 220;
   let subdivisions = 12;
   let offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
   let octave = 2;
+
+  let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave);
 
 
   let scrubber = document.createElement("div")   //scrubber setup
@@ -42,57 +41,46 @@ import SwitchSynth from "./switchSynth.js"
   let buttons = new Array;
   createGrid(buttons);
 
-  for(var i = 0; i<16 ; i++)
-  {
-    let currentOsc = audioCtx.createOscillator();
-    currentOsc.frequency.setValueAtTime (Math.pow(octave, (offsets[i]) / subdivisions) * rootNote ,audioCtx.currentTime);
-    currentOsc.startedAlready = false;
-    oscArray.push(currentOsc);
-    previousState.push(false);
-    virgins.push(true);
+  mySynth.createOscillators();
 
-  }
+
 
   function unmute(event)
   { 
-    if(virgin == true)
-    {
-      oscArray.forEach(osc => 
-      {
-        osc.start();
-      });
-      virgin = false;
-    } 
-    mySynth.testLog();
-    //testFuck.testX();
-    // console.log(testFuck);
-    // console.log(testFuck.testLog());
-    // console.log(testFuck.testLog);
-    // console.log(testFuck.testLog.test());
-    // console.log(testFuck.testLog.test);
-    
-    //testFuck.testLog.test();
+    // if(virgin == true)
+    // {
+    //   oscArray.forEach(osc => 
+    //   {
+    //     osc.start();
+    //   });
+    //   virgin = false;
+    // } 
+    mySynth.startOscillators();
     event.target.className = "playButtoff";
     event.target.textContent = "";
   }
 
   function unmuteSelectedNotes()
   {
-    if (virgin == true)
-    {
-      //console.log("forever virgin");
-      return;
-    }
+    console.log("in unmute");
+    // if (virgin == true)
+    // {
+    //   console.log("forever virgin");
+    //   return;
+    // }
     buttons[currentIteration].forEach(button => 
     {
       let currentIndex =   buttons[currentIteration].indexOf(button);
-
-      if(button.className != 'matrixButtOff' && (buttons[previousIteration][currentIndex].className == 'matrixButtOff' || virgins[currentIndex] == true  )){
-        oscArray[currentIndex].connect(audioCtx.destination);
+      //console.log("current index : " + currentIndex);
+      if(button.className != 'matrixButtOff' && (buttons[previousIteration][currentIndex].className == 'matrixButtOff' || mySynth.oscillatorState[currentIndex] == false  )){
+        //oscArray[currentIndex].connect(audioCtx.destination);
+        mySynth.connectSpecificOscillator(currentIndex);
       }
-      else if (button.className == 'matrixButtOff' && (buttons[previousIteration][currentIndex].className == 'matrixButtOn'  || virgins[currentIndex] == false  ))
+      else if (button.className == 'matrixButtOff' && (buttons[previousIteration][currentIndex].className == 'matrixButtOn' || mySynth.oscillatorState[currentIndex] == true  ))
       {
-        oscArray[currentIndex].disconnect(audioCtx.destination);
+        mySynth.disconnectSpecificOscillator(currentIndex);
+
+        //oscArray[currentIndex].disconnect(audioCtx.destination);
       }
     });
   }
@@ -100,6 +88,8 @@ import SwitchSynth from "./switchSynth.js"
 
   function eachTick()
   {
+ 
+
     if(parseInt(scrubber.style.left.substring(0,scrubber.style.left.length-2)) < 600)
     {
       currentIteration++;
@@ -112,7 +102,10 @@ import SwitchSynth from "./switchSynth.js"
       updatePreviousIteration();
       resetBar();
     }
+ 
     unmuteSelectedNotes();
+ 
+
   }
 
   function incrementBar()
