@@ -14,13 +14,13 @@ export default class SwitchSynth
     {
         this.AudioContext = window.AudioContext || window.webkitAudioContext;
         this.audioCtx = new AudioContext();
-        this.oscArray = new Array;
-        this.oscillatorState = new Array;     
+        this.oscArray = [];
+        this.oscillatorState = [];     
     
-        this.rootNote = 220;
-        this.subdivisions = 12;
-        this.offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-        this.octave = 2;
+        this.rootNote = rootNote;
+        this.subdivisions = subdivisions;
+        this.offsets = offsets;
+        this.octave = octave;
     }
 
     createOscillators()
