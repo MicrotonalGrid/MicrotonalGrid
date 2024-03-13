@@ -15,7 +15,6 @@ export default class Grid
     {
       this.className = 'matrixButtOff';
     }
-    console.log(this);
   }
 
 
