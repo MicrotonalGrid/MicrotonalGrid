@@ -1,4 +1,7 @@
+/* eslint-disable no-inner-declarations */
 import SwitchSynth from "./switchSynth.js"
+import Grid from "./grid.js"
+
 {
   let onOff = document.createElement("div");
   onOff.style.bottom = 0;
@@ -26,8 +29,9 @@ import SwitchSynth from "./switchSynth.js"
 
   setInterval(eachTick, 125);
 
-  let buttons = new Array;
-  createGrid(buttons);
+  let myGrid = new Grid();
+  let buttons = [];
+  myGrid.createGrid(buttons);
 
   mySynth.createOscillators();
 

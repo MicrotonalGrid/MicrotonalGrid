@@ -1,21 +1,11 @@
-
-function onMouseClick(event)
+export default class Grid
 {
-  if(this.className == 'matrixButtOff')
+  constructor()
   {
-    this.className = 'matrixButtOn';
-  }
-  else
-  {
-    this.className = 'matrixButtOff';
-  }
-  console.log(this);
-}
 
+  }
 
-function onMouseOver(event)
-{
-  if(event.buttons>0)
+  onMouseClick()
   {
     if(this.className == 'matrixButtOff')
     {
@@ -25,34 +15,50 @@ function onMouseOver(event)
     {
       this.className = 'matrixButtOff';
     }
-    
+    console.log(this);
   }
-}
-/***
- * 
- * Gets passed an existing array and appends a grid of buttons with turn on off functionality, which 
- * can then be manipulated where it is created by referencing the array passed in out there
- * 
- */
-function createGrid(buttons) 
-{
-  for (var j = 0; j < 16 ; j++)
+
+
+  onMouseOver(event)
   {
-    buttons.push(new Array);
-        
-    for (var i = 0; i < 16 ; i++)
+    if(event.buttons>0)
     {
+      if(this.className == 'matrixButtOff')
+      {
+        this.className = 'matrixButtOn';
+      }
+      else
+      {
+        this.className = 'matrixButtOff';
+      }
+      
+    }
+  }
+  /***
+   * 
+   * Gets passed an existing array and appends a grid of buttons with turn on off functionality, which 
+   * can then be manipulated where it is created by referencing the array passed in out there
+   * 
+   */
+  createGrid(buttons) 
+  {
+    for (var j = 0; j < 16 ; j++)
+    {
+      buttons.push([]);
           
-      buttons[j].push(document.createElement("div"));
-      buttons[j][i].style.bottom = String((i * 37.5) + 5.5)+"px";
-      buttons[j][i].style.right = String((700- (j * 37.5) + 7.5))+"px";
-    
-      buttons[j][i].id = "button"+i+j;
-      buttons[j][i].className = "matrixButtOff";
-      buttons[j][i].addEventListener('mouseover',onMouseOver, false);
-      buttons[j][i].addEventListener('mousedown',onMouseClick, false);
-      document.getElementById("matrix").appendChild(buttons[j][i]);          
+      for (var i = 0; i < 16 ; i++)
+      {
+            
+        buttons[j].push(document.createElement("div"));
+        buttons[j][i].style.bottom = String((i * 37.5) + 5.5)+"px";
+        buttons[j][i].style.right = String((700- (j * 37.5) + 7.5))+"px";
+      
+        buttons[j][i].id = "button"+i+j;
+        buttons[j][i].className = "matrixButtOff";
+        buttons[j][i].addEventListener('mouseover',this.onMouseOver, false);
+        buttons[j][i].addEventListener('mousedown',this.onMouseClick, false);
+        document.getElementById("matrix").appendChild(buttons[j][i]);          
+      }
     }
   }
 }
-
