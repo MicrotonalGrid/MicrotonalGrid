@@ -56,3 +56,12 @@ body
 	height:600px;
 	position:absolute;
 }
+
+.offsets
+{
+	color:#000000;
+	background:#FFFFFF;
+	width:25px;
+	height:25px;
+	position:absolute;
+}

@@ -1,6 +1,7 @@
 /* eslint-disable no-inner-declarations */
 import SwitchSynth from "./switchSynth.js"
 import Grid from "./grid.js"
+import SynthConfig from "./synthConfig.js"
 
 {
   let onOff = document.createElement("div");
@@ -17,6 +18,10 @@ import Grid from "./grid.js"
   let octave = 2;
 
   let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave);
+  let mySynthDisplay = new SynthConfig(rootNote,subdivisions,offsets,octave);
+
+  let offsetDisplays = [];
+  mySynthDisplay.createDisplay(offsetDisplays);
 
   let scrubber = document.createElement("div")   //scrubber setup
   scrubber.style.bottom = 0;
