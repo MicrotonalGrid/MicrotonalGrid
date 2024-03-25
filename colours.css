@@ -1,6 +1,7 @@
 body
 {
 	background:#0ff000;
+	font-family: sans-serif;
 }
 
 #matrix
@@ -64,6 +65,9 @@ body
 	width:25px;
 	height:25px;
 	position:absolute;
+	font-size:20px ;
+	text-align: center;
+
 }
 
 .octave

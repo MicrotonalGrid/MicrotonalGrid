@@ -46,7 +46,7 @@ export default class SynthConfig
 
 
         octaveDisplay = document.createElement("div");
-        octaveDisplay.style.bottom = String(370)+"px";
+        octaveDisplay.style.bottom = String(365)+"px";
         octaveDisplay.style.right = String(800-730)+"px";
 
         octaveDisplay.id = "octaveDisplay";
@@ -80,8 +80,8 @@ export default class SynthConfig
         let rootInfo;
         rootInfo = document.createElement("div");
         rootInfo.style.bottom = String(300)+"px";
-        rootInfo.style.right = String(800-780)+"px";
-        rootInfo.style.width = 110+"px";
+        rootInfo.style.right = String(800-790)+"px";
+        rootInfo.style.width = 120+"px";
 
         rootInfo.id = "rootInfo";
         rootInfo.className = "subdivisions";
@@ -89,19 +89,15 @@ export default class SynthConfig
         rootInfo.style.textDecoration = "underline";
         document.getElementById("matrix").appendChild(rootInfo);  
 
-        let rootFreq;
-        rootFreq = document.createElement("div");
-        rootFreq.style.bottom = String(280)+"px";
-        rootFreq.style.right = String(800-790)+"px";
-        rootFreq.style.width = 110+"px";
+        rootNoteDisplay = document.createElement("div");
+        rootNoteDisplay.style.bottom = String(280)+"px";
+        rootNoteDisplay.style.right = String(800-790)+"px";
+        rootNoteDisplay.style.width = 110+"px";
 
-        rootFreq.id = "rootFreq";
-        rootFreq.className = "octave";
-        rootFreq.textContent = String(this.rootNote)  ;//textContent
+        rootNoteDisplay.id = "rootFreq";
+        rootNoteDisplay.className = "octave";
+        rootNoteDisplay.textContent = String(this.rootNote)  ;//textContent
  
-        document.getElementById("matrix").appendChild(rootFreq);  
-
-
-        
+        document.getElementById("matrix").appendChild(rootNoteDisplay);          
     }
 }

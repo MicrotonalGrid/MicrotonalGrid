@@ -12,8 +12,7 @@ export default class SwitchSynth
 
     constructor(rootNote,subdivisions,offsets,octave)
     {
-        this.AudioContext = window.AudioContext || window.webkitAudioContext;
-        this.audioCtx = new AudioContext();
+
         this.oscArray = [];
         this.oscillatorState = [];     
     
@@ -25,6 +24,8 @@ export default class SwitchSynth
 
     createOscillators()
     {
+        this.AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.audioCtx = new AudioContext();
         for(var i = 0; i<16 ; i++)
         {
           let currentOsc = this.audioCtx.createOscillator();

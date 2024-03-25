@@ -41,10 +41,11 @@ import SynthConfig from "./synthConfig.js"
   let buttons = [];
   myGrid.createGrid(buttons);
 
-  mySynth.createOscillators();
+
 
   function unmute(event)
   { 
+    mySynth.createOscillators();
     mySynth.startOscillators();
     event.target.className = "playButtoff";
     event.target.textContent = "";
