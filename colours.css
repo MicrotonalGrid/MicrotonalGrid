@@ -65,3 +65,22 @@ body
 	height:25px;
 	position:absolute;
 }
+
+.octave
+{
+	color:#000000;
+	background:#FFFFFF00;
+	font-size:50px ;
+	width:25px;
+	height:25px;
+	position:absolute;
+}
+
+.subdivisions
+{
+	color:#000000;
+	background:#FFFFFF00;
+	width:25px;
+	height:25px;
+	position:absolute;
+}

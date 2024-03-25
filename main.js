@@ -21,7 +21,10 @@ import SynthConfig from "./synthConfig.js"
   let mySynthDisplay = new SynthConfig(rootNote,subdivisions,offsets,octave);
 
   let offsetDisplays = [];
-  mySynthDisplay.createDisplay(offsetDisplays);
+  let octaveDisplay;
+  let subdivisionsDisplay;
+  let rootNoteDisplay;
+  mySynthDisplay.createDisplay(offsetDisplays,octaveDisplay,subdivisionsDisplay,rootNoteDisplay);
 
   let scrubber = document.createElement("div")   //scrubber setup
   scrubber.style.bottom = 0;
