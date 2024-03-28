@@ -88,3 +88,20 @@ body
 	height:25px;
 	position:absolute;
 }
+.upTriangle
+{
+		background-image: url("triangle.svg");
+		background-size: contain;
+	position:absolute;
+
+}
+
+.downTriangle
+{
+		background-image: url("triangle.svg");
+		background-size: contain;
+		filter:invert(1);
+		rotate:180deg;
+	position:absolute;
+
+}
