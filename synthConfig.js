@@ -37,7 +37,7 @@ export default class SynthConfig
         newOffsetDisplay.style.bottom = String((currentArrayPosition * 37.5) + 5.5)+"px";
         //let currentArrayPosition = offsetArray.push(document.createElement("div"));
         //currentArrayPosition--;
-        newOffsetDisplay.style.bottom = String((currentArrayPosition * 37.5) + 5.5)+"px";
+       // newOffsetDisplay.style.bottom = String((currentArrayPosition * 37.5) + 5.5)+"px";
         //offsetArray[i].style.bottom = String(400-((i * 37.5) + 5.5))+"px";
         newOffsetDisplay.style.right = String((700+ 37.5))+"px";
     
@@ -51,11 +51,11 @@ export default class SynthConfig
 
         let upTriangle = document.createElement("div");
         //upTriangle = document.createElement("div");
-        upTriangle.style.bottom = String( 20)+"px";
+        upTriangle.style.bottom =  String((currentArrayPosition * 37.5) +15)+"px";
         upTriangle.style.right = String(800-40)+"px";
         //myTriangle.style.width = 120+"px";
 
-        upTriangle.id = "donTriange";
+        upTriangle.id = "donTriange"+currentArrayPosition;
         upTriangle.className = "upTriangle";
         upTriangle.style.width = 40+"px";
         upTriangle.style.height = 20+"px";
@@ -66,15 +66,18 @@ export default class SynthConfig
 
         let downTriangle = document.createElement("div");
         //downTriangle = document.createElement("div");
-        downTriangle.style.bottom = String(0)+"px";
+        downTriangle.style.bottom =  String((currentArrayPosition * 37.5) - 5.5)+"px";
         downTriangle.style.right = String(800-40)+"px";
         //myTriangle.style.width = 120+"px";
 
-        downTriangle.id = "donTriange";
+        downTriangle.id = "donTriange"+currentArrayPosition;
         downTriangle.className = "downTriangle";
         downTriangle.style.width = 40+"px";
         downTriangle.style.height = 20+"px";
-        newControlUnit.downArrow = upTriangle;
+        newControlUnit.downArrow = downTriangle;
+
+        console.log(downTriangle);
+        console.log(newControlUnit);
 
         //offsetArray.push(document.createElement("div"));
         newControlUnit.container.appendChild(newControlUnit.display);

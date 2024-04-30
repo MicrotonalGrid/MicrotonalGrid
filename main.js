@@ -4,6 +4,8 @@ import Grid from "./grid.js"
 import SynthConfig from "./synthConfig.js"
 
 {
+  document.cookie = "SameSite=none";
+  console.log(document.cookie);
   let onOff = document.createElement("div");
   onOff.style.bottom = 0;
   onOff.style.right =0;
