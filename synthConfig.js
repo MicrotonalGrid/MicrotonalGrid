@@ -15,21 +15,96 @@ export default class SynthConfig
         this.octave = octave;
     }
 
-    createDisplay(offsetArray,octaveDisplay,subdivisionsDisplay,rootNoteDisplay)
+    addNoteControl(offsetArray)
+    {
+        let currentArrayPosition = offsetArray.length;
+
+        let newControlUnit = 
+        {
+            container:{},
+            display:{},
+            upArrow:{},
+            downArrow:{}
+        };
+
+        let newContainer = document.createElement("div");
+        newContainer.id = 'offsetsGroup'+currentArrayPosition;
+
+        newControlUnit.container = newContainer;
+
+
+        let newOffsetDisplay = document.createElement("div"); //todo : fix constructor to use document.createElement and keep track of this stuff. 
+        newOffsetDisplay.style.bottom = String((currentArrayPosition * 37.5) + 5.5)+"px";
+        //let currentArrayPosition = offsetArray.push(document.createElement("div"));
+        //currentArrayPosition--;
+        newOffsetDisplay.style.bottom = String((currentArrayPosition * 37.5) + 5.5)+"px";
+        //offsetArray[i].style.bottom = String(400-((i * 37.5) + 5.5))+"px";
+        newOffsetDisplay.style.right = String((700+ 37.5))+"px";
+    
+        newOffsetDisplay.id = "offset"+currentArrayPosition;
+        newOffsetDisplay.className = "offsets";//textContent
+        newOffsetDisplay.textContent = this.offsets[currentArrayPosition];//textContent
+
+        newControlUnit.display = newOffsetDisplay;
+
+        //document.getElementById("matrix").appendChild(offsetArray[currentArrayPosition]); 
+
+        let upTriangle = document.createElement("div");
+        //upTriangle = document.createElement("div");
+        upTriangle.style.bottom = String( 20)+"px";
+        upTriangle.style.right = String(800-40)+"px";
+        //myTriangle.style.width = 120+"px";
+
+        upTriangle.id = "donTriange";
+        upTriangle.className = "upTriangle";
+        upTriangle.style.width = 40+"px";
+        upTriangle.style.height = 20+"px";
+ 
+        newControlUnit.upArrow = upTriangle;
+        //upTriangle.addEventListener('mousedown',this.jimmy, false);
+        //document.getElementById(offsetArray[currentArrayPosition].id).appendChild(upTriangle);  
+
+        let downTriangle = document.createElement("div");
+        //downTriangle = document.createElement("div");
+        downTriangle.style.bottom = String(0)+"px";
+        downTriangle.style.right = String(800-40)+"px";
+        //myTriangle.style.width = 120+"px";
+
+        downTriangle.id = "donTriange";
+        downTriangle.className = "downTriangle";
+        downTriangle.style.width = 40+"px";
+        downTriangle.style.height = 20+"px";
+        newControlUnit.downArrow = upTriangle;
+
+        //offsetArray.push(document.createElement("div"));
+        newControlUnit.container.appendChild(newControlUnit.display);
+        newControlUnit.container.appendChild(newControlUnit.downArrow);
+        newControlUnit.container.appendChild(newControlUnit.upArrow);
+        offsetArray.push(newControlUnit);
+        document.getElementById("matrix").appendChild(offsetArray[currentArrayPosition].container); 
+        // offsetArray[currentArrayPosition].id = 'offsetsGroup'+currentArrayPosition;
+        // offsetArray[currentArrayPosition].appendChild(newControlUnit.display);
+        // offsetArray[currentArrayPosition].appendChild(newControlUnit.downArrow);
+        // offsetArray[currentArrayPosition].appendChild(newControlUnit.upArrow);
+
+ 
+        // downTriangle.addEventListener('mousedown',this.onMouseClickX, false);
+        // downTriangle.addEventListener("augmentOffset",this.timmy,false);
+        // document.getElementById(offsetArray[currentArrayPosition].id).appendChild(downTriangle);  
+    }
+
+    onMouseClickX()
+    {
+        console.log("button clocked");
+    }
+  
+
+    createDisplay(offsetArray,octaveDisplay,subdivisionsDisplay,rootNoteDisplay,offsetControls)
     {
         for (var i = 0; i < 16 ; i++)
         {
-                
-            offsetArray.push(document.createElement("div"));
-            offsetArray[i].style.bottom = String((i * 37.5) + 5.5)+"px";
-            //offsetArray[i].style.bottom = String(400-((i * 37.5) + 5.5))+"px";
-            offsetArray[i].style.right = String((700+ 37.5))+"px";
-        
-            offsetArray[i].id = "offset"+i;
-            offsetArray[i].className = "offsets";//textContent
-            offsetArray[i].textContent = this.offsets[i];//textContent
+            this.addNoteControl(offsetArray,offsetControls);
 
-            document.getElementById("matrix").appendChild(offsetArray[i]); 
         }
 
         let musicSystemInfo;
@@ -98,6 +173,8 @@ export default class SynthConfig
         rootNoteDisplay.className = "octave";
         rootNoteDisplay.textContent = String(this.rootNote)  ;//textContent
  
-        document.getElementById("matrix").appendChild(rootNoteDisplay);          
+        document.getElementById("matrix").appendChild(rootNoteDisplay);      
+        
+
     }
 }
