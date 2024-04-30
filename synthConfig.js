@@ -58,7 +58,7 @@ export default class SynthConfig
         upTriangle.id = "donTriange"+currentArrayPosition;
         upTriangle.className = "upTriangle";
         upTriangle.style.width = 40+"px";
-        upTriangle.style.height = 20+"px";
+        upTriangle.style.height = 15+"px";
  
         newControlUnit.upArrow = upTriangle;
         //upTriangle.addEventListener('mousedown',this.jimmy, false);
@@ -66,14 +66,14 @@ export default class SynthConfig
 
         let downTriangle = document.createElement("div");
         //downTriangle = document.createElement("div");
-        downTriangle.style.bottom =  String((currentArrayPosition * 37.5) - 5.5)+"px";
+        downTriangle.style.bottom =  String((currentArrayPosition * 37.5) )+"px";
         downTriangle.style.right = String(800-40)+"px";
         //myTriangle.style.width = 120+"px";
 
         downTriangle.id = "donTriange"+currentArrayPosition;
         downTriangle.className = "downTriangle";
         downTriangle.style.width = 40+"px";
-        downTriangle.style.height = 20+"px";
+        downTriangle.style.height = 15+"px";
         newControlUnit.downArrow = downTriangle;
 
         console.log(downTriangle);
