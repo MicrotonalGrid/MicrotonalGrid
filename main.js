@@ -4,6 +4,8 @@ import Grid from "./grid.js"
 import SynthConfig from "./synthConfig.js"
 
 {
+  document.cookie = "SameSite=none";
+  console.log(document.cookie);
   let onOff = document.createElement("div");
   onOff.style.bottom = 0;
   onOff.style.right =0;
@@ -12,19 +14,27 @@ import SynthConfig from "./synthConfig.js"
   onOff.addEventListener('click',unmute, false);
   document.getElementById("matrix").appendChild(onOff);        
 
+  // let rootNote = 220;
+  // let subdivisions = 12;
+  // let offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+  // let octave = 2;
+
   let rootNote = 220;
-  let subdivisions = 12;
-  let offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+  let subdivisions = 24;
+  let offsets = [0,1.5*2,3*2,5*2,6.5*2,8*2,11*2,
+                0+24,(1.5*2)+24,(3*2)+24,(5*2)+24,(6.5*2)+24,(8*2)+24,(11*2)+24,48,(1.5*2)+(24*2)];
   let octave = 2;
+
 
   let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave);
   let mySynthDisplay = new SynthConfig(rootNote,subdivisions,offsets,octave);
 
   let offsetDisplays = [];
+  let offsetControls = [];
   let octaveDisplay;
   let subdivisionsDisplay;
   let rootNoteDisplay;
-  mySynthDisplay.createDisplay(offsetDisplays,octaveDisplay,subdivisionsDisplay,rootNoteDisplay);
+  mySynthDisplay.createDisplay(offsetDisplays,octaveDisplay,subdivisionsDisplay,rootNoteDisplay,offsetControls);
 
   let scrubber = document.createElement("div")   //scrubber setup
   scrubber.style.bottom = 0;
