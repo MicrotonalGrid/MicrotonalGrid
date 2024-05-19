@@ -55,8 +55,6 @@ import SynthConfig from "./synthConfig.js"
 
   function updateOffsetNote(event)
   {
-    console.log(event);
-
     mySynth.updateSpecificOscillator(event.detail.index ,event.detail.subdivision);
   }
 

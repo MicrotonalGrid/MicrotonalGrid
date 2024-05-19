@@ -89,7 +89,6 @@ export default class SynthConfig
               index: interactedIndex
             }
           });
-          //console.log(offsetChangeEvent);
         window.dispatchEvent(offsetChangeEvent);
     }
 
@@ -104,7 +103,6 @@ export default class SynthConfig
               index: interactedIndex
             }
           });
-          //console.log(offsetChangeEvent);
         window.dispatchEvent(offsetChangeEvent);
     }
   
