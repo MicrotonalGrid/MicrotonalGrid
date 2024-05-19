@@ -80,12 +80,32 @@ export default class SynthConfig
 
     onMouseClickUp(event)
     {
-        document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText = Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)+ 1;        
+        let newOffsetValue =  Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)+ 1;
+        let interactedIndex = Number(event.target.parentNode.id.slice(-2));
+        document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText = newOffsetValue;    
+        const offsetChangeEvent = new CustomEvent("offsetchange", {
+            detail: {
+              subdivision: newOffsetValue,
+              index: interactedIndex
+            }
+          });
+          //console.log(offsetChangeEvent);
+        window.dispatchEvent(offsetChangeEvent);
     }
 
     onMouseClickDown(event)
     {
+        let newOffsetValue =  Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)- 1;
+        let interactedIndex = Number(event.target.parentNode.id.slice(-2));
         document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText = Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)- 1;
+        const offsetChangeEvent = new CustomEvent("offsetchange", {
+            detail: {
+              subdivision: newOffsetValue,
+              index: interactedIndex
+            }
+          });
+          //console.log(offsetChangeEvent);
+        window.dispatchEvent(offsetChangeEvent);
     }
   
 

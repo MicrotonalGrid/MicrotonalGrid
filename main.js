@@ -51,7 +51,14 @@ import SynthConfig from "./synthConfig.js"
   let buttons = [];
   myGrid.createGrid(buttons);
 
+  window.addEventListener("offsetchange",updateOffsetNote);
 
+  function updateOffsetNote(event)
+  {
+    console.log(event);
+
+    mySynth.updateSpecificOscillator(event.detail.index ,event.detail.subdivision);
+  }
 
   function unmute(event)
   { 
