@@ -51,6 +51,11 @@ export default class SwitchSynth
         this.oscillatorState[indexOfOscillator] = true;
     }
 
+    updateSpecificOscillator(oscIndex,offsetValue)
+    {
+        this.oscArray[oscIndex].frequency.setValueAtTime (Math.pow(this.octave, offsetValue / this.subdivisions) * this.rootNote ,this.audioCtx.currentTime);
+    }
+
     disconnectSpecificOscillator(indexOfOscillator)
     {
         this.oscArray[indexOfOscillator].disconnect(this.audioCtx.destination);
