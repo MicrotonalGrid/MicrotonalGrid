@@ -53,17 +53,23 @@ export default class SwitchSynth
 
     updateSpecificOscillator(oscIndex,offsetValue)
     {
+        this.offsets[oscIndex] = offsetValue;
         this.oscArray[oscIndex].frequency.setValueAtTime (Math.pow(this.octave, offsetValue / this.subdivisions) * this.rootNote ,this.audioCtx.currentTime);
     }
 
     updateOctave(newValue)
     {
+        this.octave = newValue;
         console.log("update octave new value : " + newValue);
+
+        this.regenerateAllFrequencies();
     }
 
     updateSubdivision(newValue)
     {
+        this.subdivisions = newValue;
         console.log("update subdivision new value : " + newValue);
+        this.regenerateAllFrequencies();
         
     }
 
@@ -71,5 +77,14 @@ export default class SwitchSynth
     {
         this.oscArray[indexOfOscillator].disconnect(this.audioCtx.destination);
         this.oscillatorState[indexOfOscillator] = false;
+    }
+
+    regenerateAllFrequencies()
+    {
+        for(var i = 0; i<16 ; i++)
+            {
+              //let currentOsc = this.audioCtx.createOscillator();
+              this.oscArray[i].frequency.setValueAtTime (Math.pow(this.octave, (this.offsets[i]) / this.subdivisions) * this.rootNote ,this.audioCtx.currentTime);
+            }
     }
 }
