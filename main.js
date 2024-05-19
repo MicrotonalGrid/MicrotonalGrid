@@ -52,10 +52,22 @@ import SynthConfig from "./synthConfig.js"
   myGrid.createGrid(buttons);
 
   window.addEventListener("offsetchange",updateOffsetNote);
+  window.addEventListener("octavechange",updateOctave);
+  window.addEventListener("subdivisionchange",updateSubdivision);
 
   function updateOffsetNote(event)
   {
     mySynth.updateSpecificOscillator(event.detail.index ,event.detail.subdivision);
+  }
+
+  function updateOctave(event)
+  {
+    mySynth.updateOctave(event.detail.octave);
+  }
+
+  function updateSubdivision(event)
+  {
+    mySynth.updateSubdivision(event.detail.subdivision);
   }
 
   function unmute(event)

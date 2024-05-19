@@ -105,6 +105,78 @@ export default class SynthConfig
           });
         window.dispatchEvent(offsetChangeEvent);
     }
+
+    onOctaveClickUp(event)
+    {
+         let newOctaveValue =  Number(document.getElementById("octaveDisplayText").innerText)+ 1;
+
+         document.getElementById("octaveDisplayText").innerText =newOctaveValue;
+        const octaveChangeEvent = new CustomEvent("octavechange", {
+            detail: {
+              octave: newOctaveValue
+            }
+          });
+        window.dispatchEvent(octaveChangeEvent);
+        console.log("up");
+        console.log(event);
+    }
+
+    onOctaveClickDown(event)
+    {
+        //todo : don't let it get bellow 1
+        let newOctaveValue =  Number(document.getElementById("octaveDisplayText").innerText)- 1;
+
+        document.getElementById("octaveDisplayText").innerText =newOctaveValue;
+       const octaveChangeEvent = new CustomEvent("octavechange", {
+           detail: {
+             octave: newOctaveValue
+           }
+         });
+       window.dispatchEvent(octaveChangeEvent);
+ 
+        console.log("down");
+        console.log(event);
+
+    }
+
+    onSubdivisonClickDown(event)
+    {
+        //todo : don't let it get bellow 1
+        let newSubdivisionValue =  Number(document.getElementById("subdivisionsDisplayText").innerText)- 1;
+
+        document.getElementById("subdivisionsDisplayText").innerText =newSubdivisionValue;
+       const subdivisionChangeEvent = new CustomEvent("subdivisionchange", {
+           detail: {
+             subdivision: newSubdivisionValue
+           }
+         });
+       window.dispatchEvent(subdivisionChangeEvent);
+ 
+ 
+        console.log("down");
+        console.log(event);
+
+    }
+
+    onSubdivisonClickUp(event)
+    {
+        let newSubdivisionValue =  Number(document.getElementById("subdivisionsDisplayText").innerText)+ 1;
+
+        document.getElementById("subdivisionsDisplayText").innerText =newSubdivisionValue;
+       const subdivisionChangeEvent = new CustomEvent("subdivisionchange", {
+           detail: {
+             subdivision: newSubdivisionValue
+           }
+         });
+       window.dispatchEvent(subdivisionChangeEvent);
+ 
+ 
+        console.log("up");
+        console.log(event);
+
+    }
+  
+  
   
 
     createDisplay(offsetArray,octaveDisplay,subdivisionsDisplay,rootNoteDisplay,offsetControls)
@@ -128,25 +200,97 @@ export default class SynthConfig
         document.getElementById("matrix").appendChild(musicSystemInfo);  
 
 
+
+
+        let newOctaveContainer = document.createElement("div");
+        newOctaveContainer.id = 'octaveDisplay';
+
         octaveDisplay = document.createElement("div");
         octaveDisplay.style.bottom = String(365)+"px";
         octaveDisplay.style.right = String(800-730)+"px";
 
-        octaveDisplay.id = "octaveDisplay";
+        octaveDisplay.id = "octaveDisplayText";
         octaveDisplay.className = "octave";
         octaveDisplay.textContent = String(this.octave)  ;//textContent
 
-        document.getElementById("matrix").appendChild(octaveDisplay);  
+
+
+        let octaveUpTriangle = document.createElement("div");
+        octaveUpTriangle.style.bottom =  String(360)+"px";
+        octaveUpTriangle.style.right = String(800-730-40)+"px";
+
+        octaveUpTriangle.id = "octaveUpTriange";
+        octaveUpTriangle.className = "upTriangle";
+        octaveUpTriangle.style.width = 40+"px";
+        octaveUpTriangle.style.height = 15+"px";
+        octaveUpTriangle.style.height = 15+"px";
+        octaveUpTriangle.addEventListener('mousedown',this.onOctaveClickUp, false);
+
+        let octaveDownTriangle = document.createElement("div");
+        octaveDownTriangle.style.bottom =  String((345) )+"px";
+        octaveDownTriangle.style.right = String(800-730-40)+"px";
+
+        octaveDownTriangle.id = "octaveDownTriangle";
+        octaveDownTriangle.className = "downTriangle";
+        octaveDownTriangle.style.width = 40+"px";
+        octaveDownTriangle.style.height = 15+"px";
+
+        octaveDownTriangle.addEventListener('mousedown',this.onOctaveClickDown, false);
+
+        newOctaveContainer.appendChild(octaveDisplay);  
+        newOctaveContainer.appendChild(octaveUpTriangle);  
+        newOctaveContainer.appendChild(octaveDownTriangle);  
+        document.getElementById("matrix").appendChild(newOctaveContainer);  
+
+        /****
+         * Update this to show arrows for subdivisions
+         */
+
+        let newSubdivisionContainer = document.createElement("div");
+        newSubdivisionContainer.id = 'subdivisionDisplay';
 
         subdivisionsDisplay = document.createElement("div");
         subdivisionsDisplay.style.bottom = String(370)+"px";
         subdivisionsDisplay.style.right = String(800-750)+"px";
 
-        subdivisionsDisplay.id = "subdivisionsDisplay";
+        subdivisionsDisplay.id = "subdivisionsDisplayText";
         subdivisionsDisplay.className = "subdivisions";
         subdivisionsDisplay.textContent = String(this.subdivisions)  ;//textContent
+
+        let subdivisionUpTriangle = document.createElement("div");
+        subdivisionUpTriangle.style.bottom =  String(395)+"px";
+        subdivisionUpTriangle.style.right = String(800-750-40)+"px";
+
+        subdivisionUpTriangle.id = "subdivisionUpTriange";
+        subdivisionUpTriangle.className = "upTriangle";
+        subdivisionUpTriangle.style.width = 40+"px";
+        subdivisionUpTriangle.style.height = 15+"px";
+        subdivisionUpTriangle.style.height = 15+"px";
+        subdivisionUpTriangle.addEventListener('mousedown',this.onSubdivisonClickUp, false);
+
+        let subdivisionDownTriangle = document.createElement("div");
+        subdivisionDownTriangle.style.bottom =  String((380) )+"px";
+        subdivisionDownTriangle.style.right = String(800-750-40)+"px";
+
+        subdivisionDownTriangle.id = "subdivisionDownTriangle";
+        subdivisionDownTriangle.className = "downTriangle";
+        subdivisionDownTriangle.style.width = 40+"px";
+        subdivisionDownTriangle.style.height = 15+"px";
+
+        subdivisionDownTriangle.addEventListener('mousedown',this.onSubdivisonClickDown, false);
+
+
+        newSubdivisionContainer.appendChild(subdivisionsDisplay);  
+        newSubdivisionContainer.appendChild(subdivisionUpTriangle);  
+        newSubdivisionContainer.appendChild(subdivisionDownTriangle);  
+        document.getElementById("matrix").appendChild(newSubdivisionContainer);  
+
+
         document.getElementById("matrix").appendChild(subdivisionsDisplay);  
 
+        /****
+         * Update this to show arrows for subdivisions
+         */
 
         let x;
         x = document.createElement("div");
