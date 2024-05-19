@@ -123,8 +123,11 @@ export default class SynthConfig
 
     onOctaveClickDown(event)
     {
-        //todo : don't let it get bellow 1
         let newOctaveValue =  Number(document.getElementById("octaveDisplayText").innerText)- 1;
+        if(newOctaveValue<1)
+        {
+            return;
+        }
 
         document.getElementById("octaveDisplayText").innerText =newOctaveValue;
        const octaveChangeEvent = new CustomEvent("octavechange", {
@@ -141,8 +144,11 @@ export default class SynthConfig
 
     onSubdivisonClickDown(event)
     {
-        //todo : don't let it get bellow 1
         let newSubdivisionValue =  Number(document.getElementById("subdivisionsDisplayText").innerText)- 1;
+        if(newSubdivisionValue<1)
+        {
+            return;
+        }
 
         document.getElementById("subdivisionsDisplayText").innerText =newSubdivisionValue;
        const subdivisionChangeEvent = new CustomEvent("subdivisionchange", {
