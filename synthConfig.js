@@ -15,6 +15,27 @@ export default class SynthConfig
         this.octave = octave;
     }
 
+    updateDisplays(octave,subdivisions,offsets,rootNote=220)
+    {
+        this.rootNote = rootNote;
+        this.subdivisions = subdivisions;
+        this.offsets = offsets;
+        this.octave = octave;
+        
+        document.getElementById("octaveDisplayText").textContent = this.octave;
+        document.getElementById("subdivisionsDisplayText").innerText = this.subdivisions;
+        document.getElementById("rootFreq").innerText = this.rootNote;
+
+        for (let i = 0; i < 16 ; i++)
+          {
+            let indexX =  String(i).padStart(2,"0")
+            document.getElementById("offset"+indexX).innerText = this.offsets[i];
+  
+          }
+
+
+    }
+
     addNoteControl(offsetArray)
     {
         let currentArrayPosition = offsetArray.length;
@@ -38,8 +59,8 @@ export default class SynthConfig
         newOffsetDisplay.style.right = String((700+ 37.5))+"px";
     
         newOffsetDisplay.id = "offset"+String(currentArrayPosition).padStart(2,"0");
-        newOffsetDisplay.className = "offsets";//textContent
-        newOffsetDisplay.textContent = this.offsets[currentArrayPosition];//textContent
+        newOffsetDisplay.className = "offsets";
+        newOffsetDisplay.textContent = this.offsets[currentArrayPosition];
 
         newControlUnit.display = newOffsetDisplay;
 
@@ -187,7 +208,7 @@ export default class SynthConfig
 
     createDisplay(offsetArray,octaveDisplay,subdivisionsDisplay,rootNoteDisplay,offsetControls)
     {
-        for (var i = 0; i < 16 ; i++)
+        for (let i = 0; i < 16 ; i++)
         {
             this.addNoteControl(offsetArray,offsetControls);
 
@@ -201,7 +222,7 @@ export default class SynthConfig
 
         musicSystemInfo.id = "musicSystemInfoDisplay";
         musicSystemInfo.className = "subdivisions";
-        musicSystemInfo.textContent = "Music System"  ;//textContent
+        musicSystemInfo.textContent = "Music System"  ;
         musicSystemInfo.style.textDecoration = "underline";
         document.getElementById("matrix").appendChild(musicSystemInfo);  
 
@@ -217,7 +238,7 @@ export default class SynthConfig
 
         octaveDisplay.id = "octaveDisplayText";
         octaveDisplay.className = "octave";
-        octaveDisplay.textContent = String(this.octave)  ;//textContent
+        octaveDisplay.textContent = String(this.octave)  ;
 
 
 
@@ -261,7 +282,7 @@ export default class SynthConfig
 
         subdivisionsDisplay.id = "subdivisionsDisplayText";
         subdivisionsDisplay.className = "subdivisions";
-        subdivisionsDisplay.textContent = String(this.subdivisions)  ;//textContent
+        subdivisionsDisplay.textContent = String(this.subdivisions)  ;
 
         let subdivisionUpTriangle = document.createElement("div");
         subdivisionUpTriangle.style.bottom =  String(395)+"px";
@@ -305,7 +326,7 @@ export default class SynthConfig
 
         x.id = "x";
         x.className = "subdivisions";
-        x.textContent = "x"  ;//textContent
+        x.textContent = "x"  ;
         x.style.textDecoration = "underline";
         document.getElementById("matrix").appendChild(x);  
 
@@ -318,7 +339,7 @@ export default class SynthConfig
 
         rootInfo.id = "rootInfo";
         rootInfo.className = "subdivisions";
-        rootInfo.textContent = "Root Frequency"  ;//textContent
+        rootInfo.textContent = "Root Frequency"  ;
         rootInfo.style.textDecoration = "underline";
         document.getElementById("matrix").appendChild(rootInfo);  
 
@@ -329,7 +350,7 @@ export default class SynthConfig
 
         rootNoteDisplay.id = "rootFreq";
         rootNoteDisplay.className = "octave";
-        rootNoteDisplay.textContent = String(this.rootNote)  ;//textContent
+        rootNoteDisplay.textContent = String(this.rootNote)  ;
  
         document.getElementById("matrix").appendChild(rootNoteDisplay);      
         

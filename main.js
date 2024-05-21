@@ -14,16 +14,24 @@ import SynthConfig from "./synthConfig.js"
   onOff.addEventListener('click',unmute, false);
   document.getElementById("matrix").appendChild(onOff);        
 
-  // let rootNote = 220;
-  // let subdivisions = 12;
-  // let offsets = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-  // let octave = 2;
+
+  let westernSubdivisions = 12;
+  let westernOffsets = [0,3,5,7,10,12,12+3,5+12,7+12,10+12,24,24+3,24+5,24+7,24+10,24+12];
+  let westernOctave = 2;
+
+  let bohlenSubdivisions = 13;
+  let bohlenOffsets = [0,2,3,5,6,8,9,11,12,13,13+2,13+3,13+5,13+6,13+8,13+9];
+  let bohlenOctave = 3;
+
+  let arabOctave = 2;
+  let arabSubdivisions = 24;
+  let arabOffsets = [0,1.5*2,3*2,5*2,6.5*2,8*2,11*2,
+                0+24,(1.5*2)+24,(3*2)+24,(5*2)+24,(6.5*2)+24,(8*2)+24,(11*2)+24,48,(1.5*2)+(24*2)];
 
   let rootNote = 220;
-  let subdivisions = 24;
-  let offsets = [0,1.5*2,3*2,5*2,6.5*2,8*2,11*2,
-                0+24,(1.5*2)+24,(3*2)+24,(5*2)+24,(6.5*2)+24,(8*2)+24,(11*2)+24,48,(1.5*2)+(24*2)];
-  let octave = 2;
+  let subdivisions = westernSubdivisions;
+  let offsets = westernOffsets;
+  let octave = westernOctave;
 
 
   let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave);
@@ -54,6 +62,80 @@ import SynthConfig from "./synthConfig.js"
   window.addEventListener("offsetchange",updateOffsetNote);
   window.addEventListener("octavechange",updateOctave);
   window.addEventListener("subdivisionchange",updateSubdivision);
+
+  let western;
+  western = document.createElement("div");
+  western.style.bottom = String(568)+"px";
+  western.style.right = String(800-780)+"px";
+  western.style.width = 100+"px";
+
+  western.id = "western";
+  western.className = "offsets";
+  western.textContent = "12 tone"  ;
+  western.style.textDecoration = "underline";
+  western.addEventListener('mousedown',western12Click, false);
+  document.getElementById("matrix").appendChild(western);  
+
+  let bohlen;
+  bohlen = document.createElement("div");
+  bohlen.style.bottom = String(493)+"px";
+  bohlen.style.right = String(800-780)+"px";
+  bohlen.style.width = 100+"px";
+
+  bohlen.id = "bohlen";
+  bohlen.className = "offsets";
+  bohlen.textContent = "BP 3^13"  ;
+  bohlen.style.textDecoration = "underline";
+  bohlen.addEventListener('mousedown',bp13Click, false);
+  document.getElementById("matrix").appendChild(bohlen);  
+
+  let arabic;
+  arabic = document.createElement("div");
+  arabic.style.bottom = String(530)+"px";
+  arabic.style.right = String(800-780)+"px";
+  arabic.style.width = 100+"px";
+
+  arabic.id = "arabic";
+  arabic.className = "offsets";
+  arabic.textContent = "Arabic 24"  ;
+  arabic.style.textDecoration = "underline";
+  arabic.addEventListener('mousedown',arabicClick, false);
+  document.getElementById("matrix").appendChild(arabic); 
+
+
+  
+  function arabicClick(event)
+  {
+    subdivisions = arabSubdivisions;
+    offsets = arabOffsets;
+    octave = arabOctave;
+    mySynth.updateAllConfig(octave,subdivisions,offsets);
+    mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
+    //console.log(event);
+  }
+
+  function bp13Click(event)
+  {
+    subdivisions = bohlenSubdivisions;
+    offsets = bohlenOffsets;
+    octave = bohlenOctave;
+    mySynth.updateAllConfig(octave,subdivisions, offsets);
+    mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
+
+    //console.log(event);
+  }
+
+  function western12Click(event)
+  {
+    octave = westernOctave;
+    subdivisions = westernSubdivisions;
+    offsets = westernOffsets;
+    mySynth.updateAllConfig(octave,subdivisions, offsets);
+    mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
+
+  
+    //console.log(event);
+  }
 
   function updateOffsetNote(event)
   {
