@@ -41,11 +41,11 @@ export default class Grid
    */
   createGrid(buttons) 
   {
-    for (var j = 0; j < 16 ; j++)
+    for (let j = 0; j < 16 ; j++)
     {
       buttons.push([]);
           
-      for (var i = 0; i < 16 ; i++)
+      for (let i = 0; i < 16 ; i++)
       {
             
         buttons[j].push(document.createElement("div"));
