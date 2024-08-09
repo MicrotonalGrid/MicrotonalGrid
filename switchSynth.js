@@ -9,6 +9,7 @@ export default class SwitchSynth
     audioCtx;
     oscArray;
     oscillatorState;     
+    noteLength;
 
     constructor(rootNote,subdivisions,offsets,octave)
     {
@@ -20,6 +21,7 @@ export default class SwitchSynth
         this.subdivisions = subdivisions;
         this.offsets = offsets;
         this.octave = octave;
+        this.noteLength = 125/1000;
     }
 
     createOscillators()
@@ -56,14 +58,20 @@ export default class SwitchSynth
     {
         this.oscArray.forEach(osc => 
             {
-              osc.start();
+        //this.oscArray[indexOfOscillator].connect(this.audioCtx.destination);
+
+              //osc.start();
+              osc.connect(this.audioCtx.destination);
             }
         );
     }
 
     connectSpecificOscillator(indexOfOscillator)
     {
-        this.oscArray[indexOfOscillator].connect(this.audioCtx.destination);
+        //this.oscArray[indexOfOscillator].connect(this.audioCtx.destination);
+        
+        //osc.start(time);
+        this.oscArray[indexOfOscillator].start(this.audioCtx.currentTime);
         this.oscillatorState[indexOfOscillator] = true;
     }
 
@@ -91,7 +99,8 @@ export default class SwitchSynth
 
     disconnectSpecificOscillator(indexOfOscillator)
     {
-        this.oscArray[indexOfOscillator].disconnect(this.audioCtx.destination);
+        //this.oscArray[indexOfOscillator].disconnect(this.audioCtx.destination);
+        this.oscArray[indexOfOscillator].osc.stop(this.audioCtx.currentTime);
         this.oscillatorState[indexOfOscillator] = false;
     }
 
