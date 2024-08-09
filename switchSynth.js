@@ -30,6 +30,20 @@ export default class SwitchSynth
         {
           let currentOsc = this.audioCtx.createOscillator();
           //const gainNode = audioCtx.createGain(); // todo.... this stuff
+          // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#the_final_playsweep_function
+          /**
+           * 
+           *    const sweepEnv = new GainNode(audioCtx);
+                sweepEnv.gain.cancelScheduledValues(time);
+                sweepEnv.gain.setValueAtTime(0, time);
+                sweepEnv.gain.linearRampToValueAtTime(1, time + attackTime);
+                sweepEnv.gain.linearRampToValueAtTime(0, time + sweepLength - releaseTime);
+
+                osc.connect(sweepEnv).connect(audioCtx.destination);
+                osc.start(time);
+                osc.stop(time + sweepLength);
+           * 
+           */
           currentOsc.type = "triangle";
           currentOsc.frequency.setValueAtTime (Math.pow(this.octave, (this.offsets[i]) / this.subdivisions) * this.rootNote ,this.audioCtx.currentTime);
           currentOsc.startedAlready = false;
