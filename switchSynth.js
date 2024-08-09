@@ -39,21 +39,6 @@ export default class SwitchSynth
         for(let i = 0; i<16 ; i++)
         {
           let currentOsc = this.audioCtx.createOscillator();
-          //const gainNode = audioCtx.createGain(); // todo.... this stuff
-          // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#the_final_playsweep_function
-          /**
-           * 
-           *    const sweepEnv = new GainNode(audioCtx);
-                sweepEnv.gain.cancelScheduledValues(time);
-                sweepEnv.gain.setValueAtTime(0, time);
-                sweepEnv.gain.linearRampToValueAtTime(1, time + attackTime);
-                sweepEnv.gain.linearRampToValueAtTime(0, time + sweepLength - releaseTime);
-
-                osc.connect(sweepEnv).connect(audioCtx.destination);
-                osc.start(time);
-                osc.stop(time + sweepLength);
-           * 
-           */
           currentOsc.type = "triangle";
           currentOsc.frequency.setValueAtTime (Math.pow(this.octave, (this.offsets[i]) / this.subdivisions) * this.rootNote ,this.audioCtx.currentTime);
           currentOsc.startedAlready = false;
@@ -70,11 +55,6 @@ export default class SwitchSynth
     {
         this.oscArray.forEach(osc => 
             {
-        //this.oscArray[indexOfOscillator].connect(this.audioCtx.destination);
-
-              //osc.start();
-        //osc.connect(sweepEnv).connect(audioCtx.destination);
-
               osc.connect(this.gainArray[this.oscArray.indexOf(osc)]).connect(this.audioCtx.destination);
               osc.start(this.audioCtx.currentTime);
               this.gainArray[this.oscArray.indexOf(osc)].gain.setValueAtTime(0, this.audioCtx.currentTime);
@@ -84,10 +64,6 @@ export default class SwitchSynth
 
     connectSpecificOscillator(indexOfOscillator)
     {
-        //this.oscArray[indexOfOscillator].connect(this.audioCtx.destination);
-        
-        //osc.start(time);
-        
         this.gainArray[indexOfOscillator].gain.setValueAtTime(0, this.audioCtx.currentTime);
 
         this.gainArray[indexOfOscillator].gain.linearRampToValueAtTime(this.maxVol, this.audioCtx.currentTime + this.attackRamp);
@@ -120,9 +96,7 @@ export default class SwitchSynth
 
     disconnectSpecificOscillator(indexOfOscillator)
     {
-        //this.oscArray[indexOfOscillator].disconnect(this.audioCtx.destination);
         this.gainArray[indexOfOscillator].gain.setValueAtTime(0, this.audioCtx.currentTime);
-        //this.oscArray[indexOfOscillator].osc.stop(this.audioCtx.currentTime);
         this.oscillatorState[indexOfOscillator] = false;
     }
 
@@ -133,16 +107,6 @@ export default class SwitchSynth
         this.offsets = offsets;
         this.rootNote = rootNote;
         this.regenerateAllFrequencies();
- 
-        console.log("this.octave"); 
-        console.log(this.octave); 
-            console.log("this.subdivisions"); 
-            console.log(this.subdivisions); 
-                console.log("this.offsets"); 
-                console.log(this.offsets); 
-                    console.log("this.rootNote");
-                    console.log(this.rootNote);
-
     }
 
     regenerateAllFrequencies()
