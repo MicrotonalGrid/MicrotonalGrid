@@ -14,6 +14,7 @@ import SynthConfig from "./synthConfig.js"
   onOff.addEventListener('click',unmute, false);
   document.getElementById("matrix").appendChild(onOff);        
 
+  let itervalMiliSec = 250; //125 original value
 
   let westernSubdivisions = 12;
   let westernOffsets = [0,3,5,7,10,12,12+3,5+12,7+12,10+12,24,24+3,24+5,24+7,24+10,24+12];
@@ -34,7 +35,7 @@ import SynthConfig from "./synthConfig.js"
   let octave = westernOctave;
 
 
-  let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave);
+  let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave,itervalMiliSec);
   let mySynthDisplay = new SynthConfig(rootNote,subdivisions,offsets,octave);
 
   let offsetDisplays = [];
@@ -53,7 +54,7 @@ import SynthConfig from "./synthConfig.js"
   let currentIteration = 0;
   let previousIteration = 15; 
 
-  setInterval(eachTick, 125);
+  setInterval(eachTick, itervalMiliSec);
 
   let myGrid = new Grid();
   let buttons = [];
@@ -166,23 +167,23 @@ import SynthConfig from "./synthConfig.js"
     {
       let currentIndex =   buttons[currentIteration].indexOf(button);
       if(button.className != 'matrixButtOff' 
-        &&(
-            buttons[previousIteration][currentIndex].className == 'matrixButtOff' 
-            || mySynth.oscillatorState[currentIndex] == false  
-          )
+        // &&(
+        //     buttons[previousIteration][currentIndex].className == 'matrixButtOff' 
+        //     || mySynth.oscillatorState[currentIndex] == false  
+        //   )
         )
       {
         mySynth.connectSpecificOscillator(currentIndex);
       }
-      else if (button.className == 'matrixButtOff' 
-                && (
-                  buttons[previousIteration][currentIndex].className == 'matrixButtOn' 
-                  || mySynth.oscillatorState[currentIndex] == true  
-                )
-              )
-      {
-        mySynth.disconnectSpecificOscillator(currentIndex);
-      }
+      // else if (button.className == 'matrixButtOff' 
+      //           && (
+      //             buttons[previousIteration][currentIndex].className == 'matrixButtOn' 
+      //             || mySynth.oscillatorState[currentIndex] == true  
+      //           )
+      //         )
+      // {
+      //   mySynth.disconnectSpecificOscillator(currentIndex);
+      // }
     });
   }
 

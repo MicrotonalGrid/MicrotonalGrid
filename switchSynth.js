@@ -8,20 +8,28 @@ export default class SwitchSynth
     AudioContext;
     audioCtx;
     oscArray;
+    gainArray;
     oscillatorState;     
     noteLength;
+    attackRamp;
+    decaySlide;
+    maxVol;
 
-    constructor(rootNote,subdivisions,offsets,octave)
+    constructor(rootNote,subdivisions,offsets,octave,noteLength)
     {
 
         this.oscArray = [];
+        this.gainArray = [];
         this.oscillatorState = [];     
     
         this.rootNote = rootNote;
         this.subdivisions = subdivisions;
         this.offsets = offsets;
         this.octave = octave;
-        this.noteLength = 125/1000;
+        this.noteLength = noteLength/1000;
+        this.attackRamp = this.noteLength*0.4;
+        this.decaySlide = this.noteLength*0.4;
+        this.maxVol = 0.8
     }
 
     createOscillators()
@@ -50,7 +58,11 @@ export default class SwitchSynth
           currentOsc.frequency.setValueAtTime (Math.pow(this.octave, (this.offsets[i]) / this.subdivisions) * this.rootNote ,this.audioCtx.currentTime);
           currentOsc.startedAlready = false;
           this.oscArray.push(currentOsc);
-          this.oscillatorState.push(false);     
+          this.oscillatorState.push(false);   
+          const currentGain = new GainNode(this.audioCtx);
+          currentGain.gain.cancelScheduledValues(this.audioCtx.currentTime);
+          currentGain.gain.setValueAtTime(0, this.audioCtx.currentTime);
+          this.gainArray.push(currentGain);
         }
     }
 
@@ -61,7 +73,11 @@ export default class SwitchSynth
         //this.oscArray[indexOfOscillator].connect(this.audioCtx.destination);
 
               //osc.start();
-              osc.connect(this.audioCtx.destination);
+        //osc.connect(sweepEnv).connect(audioCtx.destination);
+
+              osc.connect(this.gainArray[this.oscArray.indexOf(osc)]).connect(this.audioCtx.destination);
+              osc.start(this.audioCtx.currentTime);
+              this.gainArray[this.oscArray.indexOf(osc)].gain.setValueAtTime(0, this.audioCtx.currentTime);
             }
         );
     }
@@ -71,7 +87,12 @@ export default class SwitchSynth
         //this.oscArray[indexOfOscillator].connect(this.audioCtx.destination);
         
         //osc.start(time);
-        this.oscArray[indexOfOscillator].start(this.audioCtx.currentTime);
+        
+        this.gainArray[indexOfOscillator].gain.setValueAtTime(0, this.audioCtx.currentTime);
+
+        this.gainArray[indexOfOscillator].gain.linearRampToValueAtTime(this.maxVol, this.audioCtx.currentTime + this.attackRamp);
+        this.gainArray[indexOfOscillator].gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + this.noteLength - this.decaySlide);
+
         this.oscillatorState[indexOfOscillator] = true;
     }
 
@@ -100,7 +121,8 @@ export default class SwitchSynth
     disconnectSpecificOscillator(indexOfOscillator)
     {
         //this.oscArray[indexOfOscillator].disconnect(this.audioCtx.destination);
-        this.oscArray[indexOfOscillator].osc.stop(this.audioCtx.currentTime);
+        this.gainArray[indexOfOscillator].gain.setValueAtTime(0, this.audioCtx.currentTime);
+        //this.oscArray[indexOfOscillator].osc.stop(this.audioCtx.currentTime);
         this.oscillatorState[indexOfOscillator] = false;
     }
 
