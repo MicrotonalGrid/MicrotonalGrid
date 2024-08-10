@@ -47,7 +47,7 @@ import SynthConfig from "./synthConfig.js"
 
   let scrubber = document.createElement("div")   //scrubber setup
   scrubber.style.bottom = 0;
-  scrubber.style.left = 65;
+  scrubber.style.right = 65;
   scrubber.className = 'scrubber';
   document.getElementById("matrix").appendChild(scrubber); 
 
@@ -169,7 +169,7 @@ import SynthConfig from "./synthConfig.js"
 
   function eachTick()
   {
-    if(parseInt(scrubber.style.left.substring(0,scrubber.style.left.length-2)) < 600)
+    if(parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2)) < 600)
     {
       currentIteration++;
       updatePreviousIteration();
@@ -186,10 +186,10 @@ import SynthConfig from "./synthConfig.js"
 
   function incrementBar()
   {
-    let tem = scrubber.style.left.substring(0,scrubber.style.left.length-2);
-      tem = parseInt(tem)+37.9;
+    let tem = scrubber.style.right.substring(0,scrubber.style.right.length-2);
+      tem = parseInt(tem)+37.5;
       tem += "px";
-      scrubber.style.left = tem;
+      scrubber.style.right = tem;
   }
 
   function updatePreviousIteration()
@@ -205,6 +205,6 @@ import SynthConfig from "./synthConfig.js"
 
   function resetBar()
   {
-    scrubber.style.left = '65px';
+    scrubber.style.right = '65px';
   }
 }
