@@ -88,7 +88,6 @@ export default class SynthConfig
         downTriangle.style.height = 15+"px";
 
         downTriangle.addEventListener('mousedown',this.onMouseClickDown, false);
-        // downTriangle.addEventListener("augmentOffset",this.timmy,false);
 
         newControlUnit.downArrow = downTriangle;
 

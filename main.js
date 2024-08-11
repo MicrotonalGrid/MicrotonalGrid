@@ -169,9 +169,6 @@ import SynthConfig from "./synthConfig.js"
 
   function eachTick()
   {
-    console.log("scrubebr pos");
-    console.log(scrubber );
-  
     if(parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2)) > 145)
     {
       currentIteration++;
@@ -189,21 +186,13 @@ import SynthConfig from "./synthConfig.js"
 
   function incrementBar(positionNumber)
   {
-    //let tem = scrubber.style.right.substring(0,scrubber.style.right.length-2);
-    //  tem = parseInt(tem)-37.5;
     let referenceButton = buttons[positionNumber][0];
     let tem = referenceButton.style.right.substring(0,referenceButton.style.right.length-2);
     tem = parseInt(tem)-2.5;
     tem += "px";
-    // let tem = buttons[positionNumber][0].style.right; 
-    // parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2))
-    console.log(buttons);
-    console.log(buttons[positionNumber][0]);
 
-      //tem += "px";
-      console.log("next position : ");
-      console.log(tem);
-      scrubber.style.right = tem;
+
+    scrubber.style.right = tem;
   }
 
   function updatePreviousIteration()
