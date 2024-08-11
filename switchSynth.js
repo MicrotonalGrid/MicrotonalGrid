@@ -81,17 +81,13 @@ export default class SwitchSynth
     updateOctave(newValue)
     {
         this.octave = newValue;
-        console.log("update octave new value : " + newValue);
-
         this.regenerateAllFrequencies();
     }
 
     updateSubdivision(newValue)
     {
         this.subdivisions = newValue;
-        console.log("update subdivision new value : " + newValue);
-        this.regenerateAllFrequencies();
-        
+        this.regenerateAllFrequencies();        
     }
 
     disconnectSpecificOscillator(indexOfOscillator)

@@ -47,7 +47,7 @@ import SynthConfig from "./synthConfig.js"
 
   let scrubber = document.createElement("div")   //scrubber setup
   scrubber.style.bottom = 0;
-  scrubber.style.left = 65;
+  scrubber.style.right = 800 - 95 + 'px';
   scrubber.className = 'scrubber';
   document.getElementById("matrix").appendChild(scrubber); 
 
@@ -169,11 +169,11 @@ import SynthConfig from "./synthConfig.js"
 
   function eachTick()
   {
-    if(parseInt(scrubber.style.left.substring(0,scrubber.style.left.length-2)) < 600)
+    if(parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2)) > 145)
     {
       currentIteration++;
       updatePreviousIteration();
-      incrementBar();
+      incrementBar(currentIteration);
     }
     else
     {
@@ -181,15 +181,18 @@ import SynthConfig from "./synthConfig.js"
       updatePreviousIteration();
       resetBar();
     }
-    unmuteSelectedNotes();
+    unmuteSelectedNotes(currentIteration);
   }
 
-  function incrementBar()
+  function incrementBar(positionNumber)
   {
-    let tem = scrubber.style.left.substring(0,scrubber.style.left.length-2);
-      tem = parseInt(tem)+37.9;
-      tem += "px";
-      scrubber.style.left = tem;
+    let referenceButton = buttons[positionNumber][0];
+    let tem = referenceButton.style.right.substring(0,referenceButton.style.right.length-2);
+    tem = parseInt(tem)-2.5;
+    tem += "px";
+
+
+    scrubber.style.right = tem;
   }
 
   function updatePreviousIteration()
@@ -205,6 +208,6 @@ import SynthConfig from "./synthConfig.js"
 
   function resetBar()
   {
-    scrubber.style.left = '65px';
+    scrubber.style.right = 800-95 + 'px';
   }
 }
