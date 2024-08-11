@@ -47,7 +47,7 @@ import SynthConfig from "./synthConfig.js"
 
   let scrubber = document.createElement("div")   //scrubber setup
   scrubber.style.bottom = 0;
-  scrubber.style.right = 65;
+  scrubber.style.right = 800 - 95 + 'px';
   scrubber.className = 'scrubber';
   document.getElementById("matrix").appendChild(scrubber); 
 
@@ -169,11 +169,14 @@ import SynthConfig from "./synthConfig.js"
 
   function eachTick()
   {
-    if(parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2)) < 600)
+    console.log("scrubebr pos");
+    console.log(scrubber );
+  
+    if(parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2)) > 145)
     {
       currentIteration++;
       updatePreviousIteration();
-      incrementBar();
+      incrementBar(currentIteration);
     }
     else
     {
@@ -181,14 +184,25 @@ import SynthConfig from "./synthConfig.js"
       updatePreviousIteration();
       resetBar();
     }
-    unmuteSelectedNotes();
+    unmuteSelectedNotes(currentIteration);
   }
 
-  function incrementBar()
+  function incrementBar(positionNumber)
   {
-    let tem = scrubber.style.right.substring(0,scrubber.style.right.length-2);
-      tem = parseInt(tem)+37.5;
-      tem += "px";
+    //let tem = scrubber.style.right.substring(0,scrubber.style.right.length-2);
+    //  tem = parseInt(tem)-37.5;
+    let referenceButton = buttons[positionNumber][0];
+    let tem = referenceButton.style.right.substring(0,referenceButton.style.right.length-2);
+    tem = parseInt(tem)-2.5;
+    tem += "px";
+    // let tem = buttons[positionNumber][0].style.right; 
+    // parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2))
+    console.log(buttons);
+    console.log(buttons[positionNumber][0]);
+
+      //tem += "px";
+      console.log("next position : ");
+      console.log(tem);
       scrubber.style.right = tem;
   }
 
@@ -205,6 +219,6 @@ import SynthConfig from "./synthConfig.js"
 
   function resetBar()
   {
-    scrubber.style.right = '65px';
+    scrubber.style.right = 800-95 + 'px';
   }
 }
