@@ -29,8 +29,34 @@ export default class SynthConfig
         for (let i = 0; i < 16 ; i++)
           {
             let indexX =  String(i).padStart(2,"0")
-            document.getElementById("offset"+indexX).innerText = this.offsets[i];
-  
+            let currentElement = document.getElementById("offset"+indexX);
+            currentElement.innerText = this.offsets[i]%subdivisions;
+            currentElement.setAttribute("offsetValue",this.offsets[i]);
+
+            switch(Math.floor(this.offsets[i]/subdivisions))
+            {
+              case 0:
+                currentElement.style.background = "#FFFFFF";
+                break;
+              case 1:
+                currentElement.style.background = "#77FFFF";
+                break;
+              case 2:
+                currentElement.style.background = "#FF77FF";
+                break;
+              case 3:
+                currentElement.style.background = "#FFFF77";
+                break;
+              case 4:
+                currentElement.style.background = "#7777FF";
+                break;
+              case 5:
+                currentElement.style.background = "#FF7777";
+                break;
+              default:
+                currentElement.style.background = "#FFFFFF";
+                break;
+            }            
           }
 
 
@@ -60,7 +86,34 @@ export default class SynthConfig
     
         newOffsetDisplay.id = "offset"+String(currentArrayPosition).padStart(2,"0");
         newOffsetDisplay.className = "offsets";
-        newOffsetDisplay.textContent = this.offsets[currentArrayPosition];
+        newOffsetDisplay.textContent = this.offsets[currentArrayPosition]%this.subdivisions; // here 
+        newOffsetDisplay.setAttribute("offsetValue",this.offsets[currentArrayPosition]);
+
+        
+        switch(Math.floor(this.offsets[currentArrayPosition]/this.subdivisions))
+        {
+          case 0:
+            newOffsetDisplay.style.background = "#FFFFFF";
+            break;
+          case 1:
+            newOffsetDisplay.style.background = "#77FFFF";
+            break;
+          case 2:
+            newOffsetDisplay.style.background = "#FF77FF";
+            break;
+          case 3:
+            newOffsetDisplay.style.background = "#FFFF77";
+            break;
+          case 4:
+            newOffsetDisplay.style.background = "#7777FF";
+            break;
+          case 5:
+            newOffsetDisplay.style.background = "#FF7777";
+            break;
+          default:
+            newOffsetDisplay.style.background = "#FFFFFF";
+            break;
+        }
 
         newControlUnit.display = newOffsetDisplay;
 
@@ -100,29 +153,98 @@ export default class SynthConfig
 
     onMouseClickUp(event)
     {
-        let newOffsetValue =  Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)+ 1;
+        let currentElement  = document.getElementById("offset"+event.target.parentNode.id.slice(-2));
+
+        let newOffsetValue =  Number(currentElement.getAttribute("offsetValue")) + 1;
+
         let interactedIndex = Number(event.target.parentNode.id.slice(-2));
-        document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText = newOffsetValue;    
+        let numSubdivisions =  document.getElementById("subdivisionsDisplayText").innerText ;
+        currentElement.innerText = newOffsetValue%numSubdivisions;  
+        currentElement.setAttribute("offsetValue",newOffsetValue);
+
+        switch(Math.floor(newOffsetValue/numSubdivisions))
+        {
+          case 0:
+            currentElement.style.background = "#FFFFFF";
+            break;
+          case 1:
+            currentElement.style.background = "#77FFFF";
+            break;
+          case 2:
+            currentElement.style.background = "#FF77FF";
+            break;
+          case 3:
+            currentElement.style.background = "#FFFF77";
+            break;
+          case 4:
+            currentElement.style.background = "#7777FF";
+            break;
+          case 5:
+            currentElement.style.background = "#FF7777";
+            break;
+          default:
+            currentElement.style.background = "#FFFFFF";
+            break;
+        }
+
         const offsetChangeEvent = new CustomEvent("offsetchange", {
             detail: {
               subdivision: newOffsetValue,
               index: interactedIndex
             }
           });
+        
         window.dispatchEvent(offsetChangeEvent);
     }
 
     onMouseClickDown(event)
     {
-        let newOffsetValue =  Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)- 1;
+        let currentElement  = document.getElementById("offset"+event.target.parentNode.id.slice(-2));
+
+        let newOffsetValue =  Number(currentElement.getAttribute("offsetValue")) - 1;
+
         let interactedIndex = Number(event.target.parentNode.id.slice(-2));
-        document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText = Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)- 1;
+        let numSubdivisions =  document.getElementById("subdivisionsDisplayText").innerText ;
+        console.log("newOffsetValue : " + newOffsetValue);
+        console.log("numSubdivisions : " + numSubdivisions);
+        
+        console.log("newOffsetValue%numSubdivisions");
+        console.log(newOffsetValue%numSubdivisions);
+        currentElement.innerText = newOffsetValue%numSubdivisions;  
+        currentElement.setAttribute("offsetValue",newOffsetValue);
+
+        switch(Math.floor(newOffsetValue/numSubdivisions))
+        {
+          case 0:
+            currentElement.style.background = "#FFFFFF";
+            break;
+          case 1:
+            currentElement.style.background = "#77FFFF";
+            break;
+          case 2:
+            currentElement.style.background = "#FF77FF";
+            break;
+          case 3:
+            currentElement.style.background = "#FFFF77";
+            break;
+          case 4:
+            currentElement.style.background = "#7777FF";
+            break;
+          case 5:
+            currentElement.style.background = "#FF7777";
+            break;
+          default:
+            currentElement.style.background = "#FFFFFF";
+            break;
+        }
+
         const offsetChangeEvent = new CustomEvent("offsetchange", {
             detail: {
               subdivision: newOffsetValue,
               index: interactedIndex
             }
           });
+        
         window.dispatchEvent(offsetChangeEvent);
     }
 
