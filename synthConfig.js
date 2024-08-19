@@ -29,8 +29,34 @@ export default class SynthConfig
         for (let i = 0; i < 16 ; i++)
           {
             let indexX =  String(i).padStart(2,"0")
-            document.getElementById("offset"+indexX).innerText = this.offsets[i];
-  
+            let currentElement = document.getElementById("offset"+indexX);
+            currentElement.innerText = this.offsets[i]%subdivisions;
+            currentElement.setAttribute("offsetValue",this.offsets[i]);
+
+            switch(Math.floor(this.offsets[i]/subdivisions))
+            {
+              case 0:
+                currentElement.style.background = "#FFFFFF";
+                break;
+              case 1:
+                currentElement.style.background = "#77FFFF";
+                break;
+              case 2:
+                currentElement.style.background = "#FF77FF";
+                break;
+              case 3:
+                currentElement.style.background = "#FFFF77";
+                break;
+              case 4:
+                currentElement.style.background = "#7777FF";
+                break;
+              case 5:
+                currentElement.style.background = "#FF7777";
+                break;
+              default:
+                currentElement.style.background = "#FFFFFF";
+                break;
+            }            
           }
 
 
@@ -60,7 +86,34 @@ export default class SynthConfig
     
         newOffsetDisplay.id = "offset"+String(currentArrayPosition).padStart(2,"0");
         newOffsetDisplay.className = "offsets";
-        newOffsetDisplay.textContent = this.offsets[currentArrayPosition];
+        newOffsetDisplay.textContent = this.offsets[currentArrayPosition]%this.subdivisions; 
+        newOffsetDisplay.setAttribute("offsetValue",this.offsets[currentArrayPosition]);
+
+        
+        switch(Math.floor(this.offsets[currentArrayPosition]/this.subdivisions))
+        {
+          case 0:
+            newOffsetDisplay.style.background = "#FFFFFF";
+            break;
+          case 1:
+            newOffsetDisplay.style.background = "#77FFFF";
+            break;
+          case 2:
+            newOffsetDisplay.style.background = "#FF77FF";
+            break;
+          case 3:
+            newOffsetDisplay.style.background = "#FFFF77";
+            break;
+          case 4:
+            newOffsetDisplay.style.background = "#7777FF";
+            break;
+          case 5:
+            newOffsetDisplay.style.background = "#FF7777";
+            break;
+          default:
+            newOffsetDisplay.style.background = "#FFFFFF";
+            break;
+        }
 
         newControlUnit.display = newOffsetDisplay;
 
@@ -100,110 +153,155 @@ export default class SynthConfig
 
     onMouseClickUp(event)
     {
-        let newOffsetValue =  Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)+ 1;
+        let currentElement  = document.getElementById("offset"+event.target.parentNode.id.slice(-2));
+
+        let newOffsetValue =  Number(currentElement.getAttribute("offsetValue")) + 1;
+
         let interactedIndex = Number(event.target.parentNode.id.slice(-2));
-        document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText = newOffsetValue;    
+        let numSubdivisions =  document.getElementById("subdivisionsDisplayText").innerText ;
+        currentElement.innerText = newOffsetValue%numSubdivisions;  
+        currentElement.setAttribute("offsetValue",newOffsetValue);
+
+        switch(Math.floor(newOffsetValue/numSubdivisions))
+        {
+          case 0:
+            currentElement.style.background = "#FFFFFF";
+            break;
+          case 1:
+            currentElement.style.background = "#77FFFF";
+            break;
+          case 2:
+            currentElement.style.background = "#FF77FF";
+            break;
+          case 3:
+            currentElement.style.background = "#FFFF77";
+            break;
+          case 4:
+            currentElement.style.background = "#7777FF";
+            break;
+          case 5:
+            currentElement.style.background = "#FF7777";
+            break;
+          default:
+            currentElement.style.background = "#FFFFFF";
+            break;
+        }
+
         const offsetChangeEvent = new CustomEvent("offsetchange", {
             detail: {
               subdivision: newOffsetValue,
               index: interactedIndex
             }
           });
+        
         window.dispatchEvent(offsetChangeEvent);
     }
 
     onMouseClickDown(event)
     {
-        let newOffsetValue =  Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)- 1;
+        let currentElement  = document.getElementById("offset"+event.target.parentNode.id.slice(-2));
+
+        let newOffsetValue =  Number(currentElement.getAttribute("offsetValue")) - 1;
+
         let interactedIndex = Number(event.target.parentNode.id.slice(-2));
-        document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText = Number(document.getElementById("offset"+event.target.parentNode.id.slice(-2)).innerText)- 1;
+        let numSubdivisions =  document.getElementById("subdivisionsDisplayText").innerText ;
+        currentElement.innerText = newOffsetValue%numSubdivisions;  
+        currentElement.setAttribute("offsetValue",newOffsetValue);
+
+        switch(Math.floor(newOffsetValue/numSubdivisions))
+        {
+          case 0:
+            currentElement.style.background = "#FFFFFF";
+            break;
+          case 1:
+            currentElement.style.background = "#77FFFF";
+            break;
+          case 2:
+            currentElement.style.background = "#FF77FF";
+            break;
+          case 3:
+            currentElement.style.background = "#FFFF77";
+            break;
+          case 4:
+            currentElement.style.background = "#7777FF";
+            break;
+          case 5:
+            currentElement.style.background = "#FF7777";
+            break;
+          default:
+            currentElement.style.background = "#FFFFFF";
+            break;
+        }
+
         const offsetChangeEvent = new CustomEvent("offsetchange", {
             detail: {
               subdivision: newOffsetValue,
               index: interactedIndex
             }
           });
+        
         window.dispatchEvent(offsetChangeEvent);
     }
 
     onOctaveClickUp(event)
     {
-         let newOctaveValue =  Number(document.getElementById("octaveDisplayText").innerText)+ 1;
+        let newOctaveValue =  Number(document.getElementById("octaveDisplayText").innerText)+ 1;
 
-         document.getElementById("octaveDisplayText").innerText =newOctaveValue;
+        document.getElementById("octaveDisplayText").innerText =newOctaveValue;
         const octaveChangeEvent = new CustomEvent("octavechange", {
             detail: {
               octave: newOctaveValue
             }
           });
         window.dispatchEvent(octaveChangeEvent);
-        console.log("up");
-        console.log(event);
     }
 
     onOctaveClickDown(event)
     {
-        let newOctaveValue =  Number(document.getElementById("octaveDisplayText").innerText)- 1;
-        if(newOctaveValue<1)
-        {
-            return;
-        }
+      let newOctaveValue =  Number(document.getElementById("octaveDisplayText").innerText)- 1;
+      if(newOctaveValue<1)
+      {
+          return;
+      }
 
-        document.getElementById("octaveDisplayText").innerText =newOctaveValue;
-       const octaveChangeEvent = new CustomEvent("octavechange", {
-           detail: {
-             octave: newOctaveValue
-           }
-         });
-       window.dispatchEvent(octaveChangeEvent);
- 
-        console.log("down");
-        console.log(event);
-
+      document.getElementById("octaveDisplayText").innerText =newOctaveValue;
+      const octaveChangeEvent = new CustomEvent("octavechange", {
+          detail: {
+            octave: newOctaveValue
+          }
+        });
+      window.dispatchEvent(octaveChangeEvent);
     }
 
     onSubdivisonClickDown(event)
     {
-        let newSubdivisionValue =  Number(document.getElementById("subdivisionsDisplayText").innerText)- 1;
-        if(newSubdivisionValue<1)
-        {
-            return;
-        }
+      let newSubdivisionValue =  Number(document.getElementById("subdivisionsDisplayText").innerText)- 1;
+      if(newSubdivisionValue<1)
+      {
+          return;
+      }
 
-        document.getElementById("subdivisionsDisplayText").innerText =newSubdivisionValue;
-       const subdivisionChangeEvent = new CustomEvent("subdivisionchange", {
-           detail: {
-             subdivision: newSubdivisionValue
-           }
-         });
-       window.dispatchEvent(subdivisionChangeEvent);
- 
- 
-        console.log("down");
-        console.log(event);
-
+      document.getElementById("subdivisionsDisplayText").innerText =newSubdivisionValue;
+      const subdivisionChangeEvent = new CustomEvent("subdivisionchange", {
+          detail: {
+            subdivision: newSubdivisionValue
+          }
+        });
+      window.dispatchEvent(subdivisionChangeEvent);
     }
 
     onSubdivisonClickUp(event)
     {
-        let newSubdivisionValue =  Number(document.getElementById("subdivisionsDisplayText").innerText)+ 1;
+      let newSubdivisionValue =  Number(document.getElementById("subdivisionsDisplayText").innerText)+ 1;
 
-        document.getElementById("subdivisionsDisplayText").innerText =newSubdivisionValue;
-       const subdivisionChangeEvent = new CustomEvent("subdivisionchange", {
-           detail: {
-             subdivision: newSubdivisionValue
-           }
-         });
-       window.dispatchEvent(subdivisionChangeEvent);
- 
- 
-        console.log("up");
-        console.log(event);
-
+      document.getElementById("subdivisionsDisplayText").innerText =newSubdivisionValue;
+      const subdivisionChangeEvent = new CustomEvent("subdivisionchange", {
+          detail: {
+            subdivision: newSubdivisionValue
+          }
+        });
+      window.dispatchEvent(subdivisionChangeEvent);
     }
-  
-  
-  
 
     createDisplay(offsetArray,octaveDisplay,subdivisionsDisplay,rootNoteDisplay,offsetControls)
     {
@@ -225,9 +323,6 @@ export default class SynthConfig
         musicSystemInfo.style.textDecoration = "underline";
         document.getElementById("matrix").appendChild(musicSystemInfo);  
 
-
-
-
         let newOctaveContainer = document.createElement("div");
         newOctaveContainer.id = 'octaveDisplay';
 
@@ -238,8 +333,6 @@ export default class SynthConfig
         octaveDisplay.id = "octaveDisplayText";
         octaveDisplay.className = "octave";
         octaveDisplay.textContent = String(this.octave)  ;
-
-
 
         let octaveUpTriangle = document.createElement("div");
         octaveUpTriangle.style.bottom =  String(360)+"px";
@@ -267,10 +360,6 @@ export default class SynthConfig
         newOctaveContainer.appendChild(octaveUpTriangle);  
         newOctaveContainer.appendChild(octaveDownTriangle);  
         document.getElementById("matrix").appendChild(newOctaveContainer);  
-
-        /****
-         * Update this to show arrows for subdivisions
-         */
 
         let newSubdivisionContainer = document.createElement("div");
         newSubdivisionContainer.id = 'subdivisionDisplay';
@@ -314,10 +403,6 @@ export default class SynthConfig
 
         document.getElementById("matrix").appendChild(subdivisionsDisplay);  
 
-        /****
-         * Update this to show arrows for subdivisions
-         */
-
         let x;
         x = document.createElement("div");
         x.style.bottom = String(387)+"px";
@@ -328,7 +413,6 @@ export default class SynthConfig
         x.textContent = "x"  ;
         x.style.textDecoration = "underline";
         document.getElementById("matrix").appendChild(x);  
-
         
         let rootInfo;
         rootInfo = document.createElement("div");
@@ -352,7 +436,5 @@ export default class SynthConfig
         rootNoteDisplay.textContent = String(this.rootNote)  ;
  
         document.getElementById("matrix").appendChild(rootNoteDisplay);      
-        
-
     }
 }

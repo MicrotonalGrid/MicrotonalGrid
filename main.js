@@ -45,7 +45,7 @@ import SynthConfig from "./synthConfig.js"
   let rootNoteDisplay;
   mySynthDisplay.createDisplay(offsetDisplays,octaveDisplay,subdivisionsDisplay,rootNoteDisplay,offsetControls);
 
-  let scrubber = document.createElement("div")   //scrubber setup
+  let scrubber = document.createElement("div");
   scrubber.style.bottom = 0;
   scrubber.style.right = 800 - 95 + 'px';
   scrubber.className = 'scrubber';
