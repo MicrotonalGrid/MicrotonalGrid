@@ -139,12 +139,17 @@ import SynthConfig from "./synthConfig.js"
 
   function updateOctave(event)
   {
+    octave = event.detail.octave;
     mySynth.updateOctave(event.detail.octave);
+    mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
   }
 
   function updateSubdivision(event)
   {
+    subdivisions = event.detail.subdivision;
+
     mySynth.updateSubdivision(event.detail.subdivision);
+    mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
   }
 
   function unmute(event)
