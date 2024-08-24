@@ -2,7 +2,6 @@ body
 {
 	background:#0ff000;
 	font-family: sans-serif;
-	user-select: none;
 }
 
 #matrix
@@ -11,7 +10,7 @@ body
 	background:#6aa8ff;
 	width: 800px;
 	height: 600px;
-	
+	user-select: none;
 }
 
 .matrixButtOn
