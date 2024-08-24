@@ -10,7 +10,7 @@ body
 	background:#6aa8ff;
 	width: 800px;
 	height: 600px;
-	
+	user-select: none;
 }
 
 .matrixButtOn
