@@ -2,6 +2,7 @@
 import SwitchSynth from "./switchSynth.js"
 import Grid from "./grid.js"
 import SynthConfig from "./synthConfig.js"
+import Life from "./life.js"
 
 {
   document.cookie = "SameSite=none";
@@ -183,8 +184,13 @@ import SynthConfig from "./synthConfig.js"
     else
     {
       currentIteration = 0;
+      Life(buttons);
       updatePreviousIteration();
       resetBar();
+      //newGridState = conwayGame.generateNextState(currentGrid)
+
+      // grid.updateAll(newGridState)
+ 
     }
     unmuteSelectedNotes(currentIteration);
   }
