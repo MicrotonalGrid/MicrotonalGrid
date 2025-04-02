@@ -53,29 +53,29 @@ export default function Life(currentGrid)
             }
         }
 
-        console.log(neighborStates + " neighborStates " + cell.id);
+        // console.log(neighborStates + " neighborStates " + cell.id);
 
 
         if(neighborStates <2 && cell.className == "matrixButtOn")
         {
-            console.log("ff " + cell.id);
+            // console.log("ff " + cell.id);
            return "matrixButtOff";
         
         }
         else if((neighborStates == 2 || neighborStates == 3 )  && cell.className == "matrixButtOn")
         {
-            console.log("na " + cell.id);
+            // console.log("na " + cell.id);
 
             return   "matrixButtOn"; // do nothing!
         }
         else if(neighborStates >3   && cell.className == "matrixButtOn")
         {
-            console.log("ff " + cell.id);
+            // console.log("ff " + cell.id);
             return "matrixButtOff";
         }
         else if(neighborStates == 3   && cell.className == "matrixButtOff")
         {
-            console.log("on " + cell.id);
+            // console.log("on " + cell.id);
             return "matrixButtOn";
         }
         else
@@ -96,18 +96,18 @@ export default function Life(currentGrid)
             // if(square.className == "matrixButtOn")
             //     {
             //         square.className = "matrixButtOff";
-            //         console.log(column.indexOf(square));
+            //         // console.log(column.indexOf(square));
             //     }  
             //     else if(square.className == "matrixButtOff")
             //     {
-            //         //console.log(square);
+            //         //// console.log(square);
             //         //square.className ="matrixButtOn";
             //     }
         }    
         nextGrid.push(nextColumn);
     }
 
-    console.log("lol");
+    // console.log("lol");
     for (let i  = 0; i  < 16; i ++) 
     {
         for (let j = 0; j < 16; j++) {
