@@ -320,6 +320,7 @@ export default class SynthConfig
         musicSystemInfo.id = "musicSystemInfoDisplay";
         musicSystemInfo.className = "subdivisions";
         musicSystemInfo.textContent = "Music System"  ;
+        musicSystemInfo.style.fontSize = "90%"
         musicSystemInfo.style.textDecoration = "underline";
         document.getElementById("matrix").appendChild(musicSystemInfo);  
 
@@ -424,6 +425,7 @@ export default class SynthConfig
         rootInfo.className = "subdivisions";
         rootInfo.textContent = "Root Frequency"  ;
         rootInfo.style.textDecoration = "underline";
+        rootInfo.style.fontSize = "90%";
         document.getElementById("matrix").appendChild(rootInfo);  
 
         rootNoteDisplay = document.createElement("div");

@@ -2,6 +2,7 @@
 import SwitchSynth from "./switchSynth.js"
 import Grid from "./grid.js"
 import SynthConfig from "./synthConfig.js"
+import Life from "./life.js"
 
 {
   document.cookie = "SameSite=none";
@@ -12,8 +13,8 @@ import SynthConfig from "./synthConfig.js"
   onOff.textContent = "PLAY";
   onOff.className = "playButton";
   onOff.addEventListener('click',unmute, false);
-  document.getElementById("matrix").appendChild(onOff);        
-
+  document.getElementById("matrix").appendChild(onOff); 
+  
   let itervalMiliSec = 250;
 
   let westernSubdivisions = 12;
@@ -33,7 +34,6 @@ import SynthConfig from "./synthConfig.js"
   let subdivisions = westernSubdivisions;
   let offsets = westernOffsets;
   let octave = westernOctave;
-
 
   let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave,itervalMiliSec);
   let mySynthDisplay = new SynthConfig(rootNote,subdivisions,offsets,octave);
@@ -103,7 +103,35 @@ import SynthConfig from "./synthConfig.js"
   arabic.addEventListener('mousedown',arabicClick, false);
   document.getElementById("matrix").appendChild(arabic); 
 
+  let liveStill ;
+  liveStill = document.createElement("div");
+  liveStill.style.bottom = String(180)+"px";
+  liveStill.style.right = String(800-780)+"px";
+  liveStill.style.width = 100+"px";
+  liveStill.style.height = 50+"px";
 
+  liveStill.textContent = "Conway's Life Mode";
+  liveStill.className = "offsets";
+  liveStill.id = "toogleConway";
+
+  liveStill.addEventListener('click',liveDie, false);
+
+  document.getElementById("matrix").appendChild(liveStill); 
+
+  let conwayState = false;
+
+  let liveState ;
+  liveState = document.createElement("div");
+  liveState.style.bottom = String(180-25)+"px";
+  liveState.style.right = String(800-780)+"px";
+  liveState.style.width = 100+"px";
+  liveState.style.filter = "invert(1)";
+
+  liveState.textContent = conwayState;
+  liveState.className = "offsets";
+  liveState.id = "deadOrAlive";
+
+  document.getElementById("matrix").appendChild(liveState); 
   
   function arabicClick(event)
   {
@@ -160,6 +188,12 @@ import SynthConfig from "./synthConfig.js"
     event.target.textContent = "";
   }
 
+  function liveDie(event)
+  {
+    conwayState = !conwayState;
+    liveState.textContent = conwayState;
+  }
+
   function unmuteSelectedNotes()
   {
     buttons[currentIteration].forEach(button => 
@@ -183,6 +217,10 @@ import SynthConfig from "./synthConfig.js"
     else
     {
       currentIteration = 0;
+      if (conwayState == true)
+      {
+        Life(buttons);
+      }
       updatePreviousIteration();
       resetBar();
     }
