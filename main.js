@@ -15,9 +15,6 @@ import Life from "./life.js"
   onOff.addEventListener('click',unmute, false);
   document.getElementById("matrix").appendChild(onOff); 
   
-
-
-
   let itervalMiliSec = 250;
 
   let westernSubdivisions = 12;
@@ -37,7 +34,6 @@ import Life from "./life.js"
   let subdivisions = westernSubdivisions;
   let offsets = westernOffsets;
   let octave = westernOctave;
-
 
   let mySynth = new SwitchSynth(rootNote,subdivisions,offsets,octave,itervalMiliSec);
   let mySynthDisplay = new SynthConfig(rootNote,subdivisions,offsets,octave);
@@ -118,8 +114,6 @@ import Life from "./life.js"
   liveStill.className = "offsets";
   liveStill.id = "toogleConway";
 
-
-
   liveStill.addEventListener('click',liveDie, false);
 
   document.getElementById("matrix").appendChild(liveStill); 
@@ -138,7 +132,6 @@ import Life from "./life.js"
   liveState.id = "deadOrAlive";
 
   document.getElementById("matrix").appendChild(liveState); 
-
   
   function arabicClick(event)
   {
@@ -230,10 +223,6 @@ import Life from "./life.js"
       }
       updatePreviousIteration();
       resetBar();
-      //newGridState = conwayGame.generateNextState(currentGrid)
-
-      // grid.updateAll(newGridState)
- 
     }
     unmuteSelectedNotes(currentIteration);
   }

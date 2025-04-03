@@ -59,7 +59,5 @@ export default class Grid
         document.getElementById("matrix").appendChild(buttons[j][i]);          
       }
     }
-  }
-
-  
+  }  
 }
