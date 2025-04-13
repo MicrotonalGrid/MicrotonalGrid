@@ -132,7 +132,7 @@ import Life from "./life.js"
   liveState.id = "deadOrAlive";
 
   document.getElementById("matrix").appendChild(liveState); 
-  
+ 
   function arabicClick(event)
   {
     subdivisions = arabSubdivisions;

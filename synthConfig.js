@@ -1,3 +1,5 @@
+import updateUrl from "./urlUpdater.js"
+
 export default class SynthConfig
 {
     rootNote;
@@ -26,12 +28,16 @@ export default class SynthConfig
         document.getElementById("subdivisionsDisplayText").innerText = this.subdivisions;
         document.getElementById("rootFreq").innerText = this.rootNote;
 
+        updateUrl("octaveDisplayText", this.octave);
+        updateUrl("subdivisionsDisplayText", this.octave);
+
         for (let i = 0; i < 16 ; i++)
           {
             let indexX =  String(i).padStart(2,"0")
             let currentElement = document.getElementById("offset"+indexX);
             currentElement.innerText = this.offsets[i]%subdivisions;
             currentElement.setAttribute("offsetValue",this.offsets[i]);
+            updateUrl("offset"+indexX, this.offsets[i]);
 
             switch(Math.floor(this.offsets[i]/subdivisions))
             {
@@ -58,8 +64,6 @@ export default class SynthConfig
                 break;
             }            
           }
-
-
     }
 
     addNoteControl(offsetArray)
