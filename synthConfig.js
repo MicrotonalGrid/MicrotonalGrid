@@ -29,7 +29,7 @@ export default class SynthConfig
         document.getElementById("rootFreq").innerText = this.rootNote;
 
         updateUrl("octaveDisplayText", this.octave);
-        updateUrl("subdivisionsDisplayText", this.octave);
+        updateUrl("subdivisionsDisplayText", this.subdivisions);
 
         for (let i = 0; i < 16 ; i++)
           {
@@ -165,6 +165,8 @@ export default class SynthConfig
         let numSubdivisions =  document.getElementById("subdivisionsDisplayText").innerText ;
         currentElement.innerText = newOffsetValue%numSubdivisions;  
         currentElement.setAttribute("offsetValue",newOffsetValue);
+
+        updateUrl("offset"+event.target.parentNode.id.slice(-2) , newOffsetValue);
 
         switch(Math.floor(newOffsetValue/numSubdivisions))
         {

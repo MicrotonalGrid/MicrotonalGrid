@@ -3,6 +3,7 @@ import SwitchSynth from "./switchSynth.js"
 import Grid from "./grid.js"
 import SynthConfig from "./synthConfig.js"
 import Life from "./life.js"
+import updateUrl from "./urlUpdater.js"
 
 {
   document.cookie = "SameSite=none";
@@ -14,6 +15,7 @@ import Life from "./life.js"
   onOff.className = "playButton";
   onOff.addEventListener('click',unmute, false);
   document.getElementById("matrix").appendChild(onOff); 
+  let playing = false;
   
   let itervalMiliSec = 250;
 
@@ -63,6 +65,8 @@ import Life from "./life.js"
   window.addEventListener("offsetchange",updateOffsetNote);
   window.addEventListener("octavechange",updateOctave);
   window.addEventListener("subdivisionchange",updateSubdivision);
+  //window.addEventListener("click",mouseClickOrUp);
+  //window.addEventListener("mouseup",mouseClickOrUp);
 
   let western;
   western = document.createElement("div");
@@ -186,6 +190,9 @@ import Life from "./life.js"
     mySynth.startOscillators();
     event.target.className = "playButtoff";
     event.target.textContent = "";
+    window.addEventListener("click",mouseClickOrUp);
+    window.addEventListener("mouseup",mouseClickOrUp);
+    playing = true;
   }
 
   function liveDie(event)
@@ -253,4 +260,38 @@ import Life from "./life.js"
   {
     scrubber.style.right = 800-95 + 'px';
   }
+
+  function mouseClickOrUp(event)
+  {
+    if(playing == true)
+    {
+      let gridState = saveGridToUrl();
+      console.log("gridstate : " + gridState);
+      updateUrl("gridState", gridState);
+    }
+  }
+
+  function saveGridToUrl()
+  {
+    let gridData = "";
+    for (let i  = 0; i  < 16; i ++) 
+    {
+        for (let j = 0; j < 16; j++) 
+        {
+          if(buttons[i][j].className == "matrixButtOn")
+          {
+            gridData+="1";
+          }
+          else
+          {
+            gridData+="0";
+          }   
+        }                
+    }
+    console.log("binary grid data : " + gridData);
+
+    
+    return parseInt(gridData , 2).toString(36);
+  }
+
 }
