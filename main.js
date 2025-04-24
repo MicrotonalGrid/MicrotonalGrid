@@ -54,7 +54,7 @@ import updateUrl from "./urlUpdater.js"
   document.getElementById("matrix").appendChild(scrubber); 
 
   let currentIteration = 0;
-  let previousIteration = 15; 
+  //let previousIteration = 15; 
 
   setInterval(eachTick, itervalMiliSec);
 
@@ -136,7 +136,37 @@ import updateUrl from "./urlUpdater.js"
   liveState.id = "deadOrAlive";
 
   document.getElementById("matrix").appendChild(liveState); 
+
+  let loadState ;
+  loadState = document.createElement("div");
+  loadState.style.bottom = String(90)+"px";
+  loadState.style.right = String(800-780)+"px";
+  loadState.style.width = 100+"px";
+  //loadState.style.height = 50+"px";
+
+  loadState.textContent = "Load State";
+  loadState.className = "offsets";
+  loadState.id = "loadState";
+
+  loadState.addEventListener('click',loadStateFunc, false);
+
+  document.getElementById("matrix").appendChild(loadState); 
  
+  let saveState ;
+  saveState = document.createElement("div");
+  saveState.style.bottom = String(50)+"px";
+  saveState.style.right = String(800-780)+"px";
+  saveState.style.width = 100+"px";
+  //loadState.style.height = 50+"px";
+
+  saveState.textContent = "Save State";
+  saveState.className = "offsets";
+  saveState.id = "loadState";
+
+  saveState.addEventListener('click',saveStateFunc, false);
+
+  document.getElementById("matrix").appendChild(saveState); 
+
   function arabicClick(event)
   {
     subdivisions = arabSubdivisions;
@@ -218,7 +248,7 @@ import updateUrl from "./urlUpdater.js"
     if(parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2)) > 145)
     {
       currentIteration++;
-      updatePreviousIteration();
+      //updatePreviousIteration();
       incrementBar(currentIteration);
     }
     else
@@ -228,7 +258,7 @@ import updateUrl from "./urlUpdater.js"
       {
         Life(buttons);
       }
-      updatePreviousIteration();
+      //updatePreviousIteration();
       resetBar();
     }
     unmuteSelectedNotes(currentIteration);
@@ -245,16 +275,16 @@ import updateUrl from "./urlUpdater.js"
     scrubber.style.right = tem;
   }
 
-  function updatePreviousIteration()
-  {
-    if(currentIteration ==0)
-    {
-      previousIteration = 15;
-    }
-    else{
-      previousIteration = currentIteration-1;
-    }
-  }
+  // function updatePreviousIteration()
+  // {
+  //   if(currentIteration ==0)
+  //   {
+  //     previousIteration = 15;
+  //   }
+  //   else{
+  //     previousIteration = currentIteration-1;
+  //   }
+  // }
 
   function resetBar()
   {
@@ -263,19 +293,92 @@ import updateUrl from "./urlUpdater.js"
 
   function mouseClickOrUp(event)
   {
-    if(playing == true)
-    {
-      let gridState = saveGridToUrl();
-      console.log("gridstate : " + gridState);
-      updateUrl("gridState", gridState);
-    }
+    // if(playing == true)
+    // {
+    //   let gridState = saveGridToUrl();
+    //   console.log("gridstate : " + gridState);
+    //   updateUrl("gridState", gridState);
+    // }
   }
 
+  function loadStateFunc(event)
+  {
+    const url = new URL(location);
+    let text = url.searchParams.get("gridState");
+    console.log("text from URL : " + text);
+    loadStateFromUrl(text);
+  }
+
+  
+
+  function saveStateFunc(event)
+  {
+    let gridState = saveGridToUrl();
+    console.log("gridstate : " + gridState);
+    updateUrl("gridState", gridState);
+  }
+
+  // function saveStateToUrl(event)
+  // {
+  //   let gridState = saveGridToUrl();
+  //   console.log("gridstate : " + gridState);
+  //   updateUrl("gridState", gridState);
+  // }
+
+  function loadStateFromUrl(text)
+  {
+    console.log(text);
+    //let gridData = parseInt(text,36).toString(2);//.padStart(256,"0");
+    //console.log("gird state from URL : " + gridData);
+    
+    // for (let i  = 0; i  < 16; i ++) 
+    // {
+    //     for (let j = 0; j < 16; j++) 
+    //     {
+    //       if(buttons[i][j].className == "matrixButtOn")
+    //       {
+    //         gridData+="1";
+    //       }
+    //       else
+    //       {
+    //         gridData+="0";
+    //       }   
+    //     }                
+    // }
+
+    // let toReturn  = parseInt(gridData , 2).toString(36);
+    // console.log("binary grid data : " + gridData);
+
+    // console.log("string grid date  : " + toReturn);
+    // return toReturn;
+  }
+
+  /**
+   * This functions takes the state of the current grid, and loops through it, creating groupings of 4 binary numbers
+   * They go backwards from the top left. 
+   * every 4 iterations, the current binary number is turned into a base 36 number/string
+   * At the start of the 5th, 9th and 13th chord, an X is added to split up the number/strings
+   * The groupings end up being arranged as the first group, an X , second group, X, third group X fourth group.
+   * 
+   * Note the X is uppercase. This is to avoid having a URL encoded character as a seperator, or an alphaneumeric character
+   * that could ruin the actual grouping we are saving. 
+   * 
+   * TODO : load
+   * 
+   * @returns 
+   */
   function saveGridToUrl()
   {
     let gridData = "";
+    let returnText = "";
     for (let i  = 0; i  < 16; i ++) 
     {
+      if(i == 4 || i == 8 || i==12 ) 
+        {
+          returnText +=    "X" ; 
+          gridData = "";
+        } 
+
         for (let j = 0; j < 16; j++) 
         {
           if(buttons[i][j].className == "matrixButtOn")
@@ -286,12 +389,21 @@ import updateUrl from "./urlUpdater.js"
           {
             gridData+="0";
           }   
-        }                
+        } 
+        
+        if(i == 3 || i == 7 || i==11 || i==15 ) 
+          {
+            returnText +=parseInt(gridData , 2).toString(36) ;
+          } 
+
+     
     }
+
+    let toReturn  = returnText; //parseInt(gridData , 2).toString(36);
     console.log("binary grid data : " + gridData);
 
-    
-    return parseInt(gridData , 2).toString(36);
+    console.log("string grid date  : " + toReturn);
+    return toReturn;
   }
 
 }
