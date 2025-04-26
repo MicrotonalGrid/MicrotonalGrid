@@ -327,24 +327,37 @@ import updateUrl from "./urlUpdater.js"
 
   function loadStateFromUrl(text)
   {
-    console.log(text);
+    console.log("input : " + text);
+    let arrayX= text.split("X");
+    console.log("arrayX : " + arrayX);
+    let stateInBinary = "";
+
+    for(let myString of arrayX)
+    {
+      console.log("myString : " + myString);
+      let interm = parseInt(myString,36).toString(2).padStart(65,"0");
+      console.log("inter : " + interm);
+      stateInBinary += parseInt(myString,36).toString(2).padStart(65,"0");
+    }
+
+    console.log("stat : " +stateInBinary);
     //let gridData = parseInt(text,36).toString(2);//.padStart(256,"0");
     //console.log("gird state from URL : " + gridData);
     
-    // for (let i  = 0; i  < 16; i ++) 
-    // {
-    //     for (let j = 0; j < 16; j++) 
-    //     {
-    //       if(buttons[i][j].className == "matrixButtOn")
-    //       {
-    //         gridData+="1";
-    //       }
-    //       else
-    //       {
-    //         gridData+="0";
-    //       }   
-    //     }                
-    // }
+    for (let i  = 0; i  < 16; i ++) 
+    {
+        for (let j = 0; j < 16; j++) 
+        {
+          if(stateInBinary[ ( i*16  )+j ] == "1")
+          {
+            buttons[i][j].className = "matrixButtOn";
+          }
+          else
+          {
+            buttons[i][j].className = "matrixButtOff";
+          }   
+        }                
+    }
 
     // let toReturn  = parseInt(gridData , 2).toString(36);
     // console.log("binary grid data : " + gridData);
@@ -356,14 +369,14 @@ import updateUrl from "./urlUpdater.js"
   /**
    * This functions takes the state of the current grid, and loops through it, creating groupings of 4 binary numbers
    * They go backwards from the top left. 
-   * every 4 iterations, the current binary number is turned into a base 36 number/string
+   * every 4 iterations, the current binary number is turned into a base 36 number/string and the aggregatign var is reset
    * At the start of the 5th, 9th and 13th chord, an X is added to split up the number/strings
    * The groupings end up being arranged as the first group, an X , second group, X, third group X fourth group.
    * 
    * Note the X is uppercase. This is to avoid having a URL encoded character as a seperator, or an alphaneumeric character
    * that could ruin the actual grouping we are saving. 
    * 
-   * TODO : load
+   * TODO : JUST DO IT ROW By ROW
    * 
    * @returns 
    */
@@ -373,9 +386,10 @@ import updateUrl from "./urlUpdater.js"
     let returnText = "";
     for (let i  = 0; i  < 16; i ++) 
     {
-      if(i == 4 || i == 8 || i==12 ) 
+      if(i == 2 || i == 4 || i==8 || i ==10 || i ==12 || i==14 ) 
         {
           returnText +=    "X" ; 
+          
           gridData = "";
         } 
 
@@ -391,8 +405,9 @@ import updateUrl from "./urlUpdater.js"
           }   
         } 
         
-        if(i == 3 || i == 7 || i==11 || i==15 ) 
+        if(i == 1 || i == 3 || i == 5 || i == 7 || i == 9 || i==11 || i == 13 || i==15 ) 
           {
+            console.log("binary grid data " +  i + " : " + gridData);
             returnText +=parseInt(gridData , 2).toString(36) ;
           } 
 
@@ -400,7 +415,7 @@ import updateUrl from "./urlUpdater.js"
     }
 
     let toReturn  = returnText; //parseInt(gridData , 2).toString(36);
-    console.log("binary grid data : " + gridData);
+    //console.log("binary grid data : " + gridData);
 
     console.log("string grid date  : " + toReturn);
     return toReturn;
