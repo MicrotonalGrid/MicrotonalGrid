@@ -49,14 +49,12 @@ import updateUrl from "./urlUpdater.js"
 
   let scrubber = document.createElement("div");
   scrubber.style.bottom = 0;
-  scrubber.style.right = 800 - 95 + 'px';
+  scrubber.style.right = 142.5 + 'px';
+  //scrubber.style.right = 800 - 95 + 'px';
   scrubber.className = 'scrubber';
   document.getElementById("matrix").appendChild(scrubber); 
 
-  let currentIteration = 0;
-  //let previousIteration = 15; 
-
-  setInterval(eachTick, itervalMiliSec);
+  let currentIteration = 15;
 
   let myGrid = new Grid();
   let buttons = [];
@@ -66,8 +64,6 @@ import updateUrl from "./urlUpdater.js"
   window.addEventListener("offsetchange",updateOffsetNote);
   window.addEventListener("octavechange",updateOctave);
   window.addEventListener("subdivisionchange",updateSubdivision);
-  //window.addEventListener("click",mouseClickOrUp);
-  //window.addEventListener("mouseup",mouseClickOrUp);
 
   let western;
   western = document.createElement("div");
@@ -149,18 +145,18 @@ import updateUrl from "./urlUpdater.js"
   loadState.className = "offsets";
   loadState.id = "loadState";
 
-  loadState.addEventListener('click',loadStateFunc, true);
+  loadState.addEventListener('click',loadStateEvent, true);
 
   document.getElementById("matrix").appendChild(loadState); 
  
   let saveState ;
   saveState = document.createElement("div");
-  saveState.style.bottom = String(50)+"px";
+  saveState.style.bottom = String(0)+"px";
   saveState.style.right = String(800-780)+"px";
   saveState.style.width = 100+"px";
-  //loadState.style.height = 50+"px";
+  saveState.style.height = 75+"px";
 
-  saveState.textContent = "Save State";
+  saveState.textContent = "Save State Using Clipboard";
   saveState.className = "offsets";
   saveState.id = "saveState";
 
@@ -220,9 +216,11 @@ import updateUrl from "./urlUpdater.js"
     event.stopPropagation();
     mySynth.createOscillators();
     mySynth.startOscillators();
+    loadStateFunc();
     event.target.className = "playButtoff";
     event.target.textContent = "";
     playing = true;
+    setInterval(eachTick, itervalMiliSec);
   }
 
   function liveDie(event)
@@ -275,17 +273,6 @@ import updateUrl from "./urlUpdater.js"
     scrubber.style.right = tem;
   }
 
-  // function updatePreviousIteration()
-  // {
-  //   if(currentIteration ==0)
-  //   {
-  //     previousIteration = 15;
-  //   }
-  //   else{
-  //     previousIteration = currentIteration-1;
-  //   }
-  // }
-
   function resetBar()
   {
     scrubber.style.right = 800-95 + 'px';
@@ -312,9 +299,14 @@ import updateUrl from "./urlUpdater.js"
     }
   }
 
-  function loadStateFunc(event)
+  function loadStateEvent(event)
   {
     event.stopPropagation();
+    loadStateFunc();
+  }
+
+  function loadStateFunc()
+  {
     const url = new URL(location);
     url.searchParams.forEach(processUrlParam);
     mySynth.updateAllConfig(octave,subdivisions,offsets);
@@ -368,6 +360,7 @@ import updateUrl from "./urlUpdater.js"
     event.stopPropagation();
     let gridState = saveGridToUrl();
     updateUrl("gridState", gridState);
+    navigator.clipboard.writeText(window.location.href);
   }
 
 
