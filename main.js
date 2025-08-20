@@ -3,6 +3,7 @@ import SwitchSynth from "./switchSynth.js"
 import Grid from "./grid.js"
 import SynthConfig from "./synthConfig.js"
 import Life from "./life.js"
+import updateUrl from "./urlUpdater.js"
 
 {
   document.cookie = "SameSite=none";
@@ -12,8 +13,9 @@ import Life from "./life.js"
   onOff.style.right =0;
   onOff.textContent = "PLAY";
   onOff.className = "playButton";
-  onOff.addEventListener('click',unmute, false);
+  onOff.addEventListener('click',unmute, true);
   document.getElementById("matrix").appendChild(onOff); 
+  let playing = false;
   
   let itervalMiliSec = 250;
 
@@ -47,19 +49,18 @@ import Life from "./life.js"
 
   let scrubber = document.createElement("div");
   scrubber.style.bottom = 0;
-  scrubber.style.right = 800 - 95 + 'px';
+  scrubber.style.right = 142.5 + 'px';
+  //scrubber.style.right = 800 - 95 + 'px';
   scrubber.className = 'scrubber';
   document.getElementById("matrix").appendChild(scrubber); 
 
-  let currentIteration = 0;
-  let previousIteration = 15; 
-
-  setInterval(eachTick, itervalMiliSec);
+  let currentIteration = 15;
 
   let myGrid = new Grid();
   let buttons = [];
   myGrid.createGrid(buttons);
 
+  window.addEventListener("statechange",updateGridStateInUrl);
   window.addEventListener("offsetchange",updateOffsetNote);
   window.addEventListener("octavechange",updateOctave);
   window.addEventListener("subdivisionchange",updateSubdivision);
@@ -132,7 +133,37 @@ import Life from "./life.js"
   liveState.id = "deadOrAlive";
 
   document.getElementById("matrix").appendChild(liveState); 
-  
+
+  let loadState ;
+  loadState = document.createElement("div");
+  loadState.style.bottom = String(90)+"px";
+  loadState.style.right = String(800-780)+"px";
+  loadState.style.width = 100+"px";
+  //loadState.style.height = 50+"px";
+
+  loadState.textContent = "Load State";
+  loadState.className = "offsets";
+  loadState.id = "loadState";
+
+  loadState.addEventListener('click',loadStateEvent, true);
+
+  document.getElementById("matrix").appendChild(loadState); 
+ 
+  let saveState ;
+  saveState = document.createElement("div");
+  saveState.style.bottom = String(0)+"px";
+  saveState.style.right = String(800-780)+"px";
+  saveState.style.width = 100+"px";
+  saveState.style.height = 75+"px";
+
+  saveState.textContent = "Save State Using Clipboard";
+  saveState.className = "offsets";
+  saveState.id = "saveState";
+
+  saveState.addEventListener('click',saveStateFunc, true);
+
+  document.getElementById("matrix").appendChild(saveState); 
+
   function arabicClick(event)
   {
     subdivisions = arabSubdivisions;
@@ -182,10 +213,14 @@ import Life from "./life.js"
 
   function unmute(event)
   { 
+    event.stopPropagation();
     mySynth.createOscillators();
     mySynth.startOscillators();
+    loadStateFunc();
     event.target.className = "playButtoff";
     event.target.textContent = "";
+    playing = true;
+    setInterval(eachTick, itervalMiliSec);
   }
 
   function liveDie(event)
@@ -211,7 +246,7 @@ import Life from "./life.js"
     if(parseInt(scrubber.style.right.substring(0,scrubber.style.right.length-2)) > 145)
     {
       currentIteration++;
-      updatePreviousIteration();
+      //updatePreviousIteration();
       incrementBar(currentIteration);
     }
     else
@@ -221,7 +256,7 @@ import Life from "./life.js"
       {
         Life(buttons);
       }
-      updatePreviousIteration();
+      //updatePreviousIteration();
       resetBar();
     }
     unmuteSelectedNotes(currentIteration);
@@ -238,19 +273,156 @@ import Life from "./life.js"
     scrubber.style.right = tem;
   }
 
-  function updatePreviousIteration()
-  {
-    if(currentIteration ==0)
-    {
-      previousIteration = 15;
-    }
-    else{
-      previousIteration = currentIteration-1;
-    }
-  }
-
   function resetBar()
   {
     scrubber.style.right = 800-95 + 'px';
   }
+
+  function updateGridStateInUrl(event) 
+  {
+    if(playing == true)
+    {
+      //console.log("inside if");
+      let myElement = document.getElementById(event.detail.idOfButtonPressed);
+      console.log("element id : " + myElement.id);
+      if(myElement.className == 'matrixButtOff')
+      {
+        myElement.className  = 'matrixButtOn';
+      }
+      else
+      {
+        myElement.className  = 'matrixButtOff';
+      }
+
+      let gridState = saveGridToUrl();
+      updateUrl("gridState", gridState);
+    }
+  }
+
+  function loadStateEvent(event)
+  {
+    event.stopPropagation();
+    loadStateFunc();
+  }
+
+  function loadStateFunc()
+  {
+    const url = new URL(location);
+    url.searchParams.forEach(processUrlParam);
+    mySynth.updateAllConfig(octave,subdivisions,offsets);
+    mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
+  }
+
+  function processUrlParam(value , key)
+  {
+    switch(key)
+    {
+      case"gridState":
+      {
+        loadStateFromUrl(value);
+        break;
+      }
+      case "offset00":
+      case "offset01":
+      case "offset02":
+      case "offset03":
+      case "offset04":
+      case "offset05":
+      case "offset06":
+      case "offset07":
+      case "offset08":
+      case "offset09":
+      case "offset10":
+      case "offset11":
+      case "offset12":
+      case "offset13":
+      case "offset14":
+      case "offset15": 
+      {
+        let offsetIndex = Number(key.substring(6));
+        offsets[offsetIndex] = value;
+        break;
+      }
+      case "octaveDisplayText": 
+      {
+        octave = value;
+        break;
+      }
+      case "subdivisionsDisplayText": {
+        subdivisions = value;
+        break;
+      }
+    }
+  }
+
+  function saveStateFunc(event)
+  {
+    event.stopPropagation();
+    let gridState = saveGridToUrl();
+    updateUrl("gridState", gridState);
+    navigator.clipboard.writeText(window.location.href);
+  }
+
+
+  function loadStateFromUrl(text)
+  {
+    let arrayX= text.split("X");
+    let stateInBinary = "";
+
+    for(let myString of arrayX)
+    {
+      let interm = parseInt(myString,36).toString(2).padStart(16,"0");
+      stateInBinary += parseInt(myString,36).toString(2).padStart(16,"0");
+    }
+    
+    for (let i  = 0; i  < 16; i ++) 
+    {
+        for (let j = 0; j < 16; j++) 
+        {
+          if(stateInBinary[ ( i*16  )+j ] == "1")
+          {
+            buttons[i][j].className = "matrixButtOn";
+          }
+          else
+          {
+            buttons[i][j].className = "matrixButtOff";
+          }   
+        }                
+    }
+
+  }
+
+
+  function saveGridToUrl()
+  {
+    let gridData = "";
+    let returnText = "";
+    for (let i  = 0; i  < 16; i ++) 
+    {
+      for (let j = 0; j < 16; j++) 
+      {
+        if(buttons[i][j].className == "matrixButtOn")
+        {
+          gridData+="1";
+        }
+        else
+        {
+          gridData+="0";
+        }   
+      } 
+      returnText +=parseInt(gridData , 2).toString(36) ;
+
+      if(i != 15 ) 
+        {
+          returnText +=    "X" ; 
+          
+          gridData = "";
+        }     
+    }
+
+    let toReturn  = returnText;
+
+    return toReturn;
+  }
+
 }
