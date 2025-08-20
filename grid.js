@@ -7,14 +7,22 @@ export default class Grid
 
   onMouseClick()
   {
-    if(this.className == 'matrixButtOff')
-    {
-      this.className = 'matrixButtOn';
-    }
-    else
-    {
-      this.className = 'matrixButtOff';
-    }
+    const stateChangeEvent = new CustomEvent("statechange", {
+      detail: {
+        idOfButtonPressed: this.id
+      }
+    });
+    window.dispatchEvent(stateChangeEvent);
+  }
+
+  updateTrigger(myId)
+  {
+    const stateChangeEvent = new CustomEvent("statechange", {
+      detail: {
+        idOfButtonPressed: this.id
+      }
+    });
+    window.dispatchEvent(stateChangeEvent);
   }
 
 
@@ -22,15 +30,12 @@ export default class Grid
   {
     if(event.buttons>0)
     {
-      if(this.className == 'matrixButtOff')
-      {
-        this.className = 'matrixButtOn';
-      }
-      else
-      {
-        this.className = 'matrixButtOff';
-      }
-      
+      const stateChangeEvent = new CustomEvent("statechange", {
+        detail: {
+          idOfButtonPressed: this.id
+        }
+      });
+      window.dispatchEvent(stateChangeEvent);
     }
   }
   /***
@@ -52,7 +57,7 @@ export default class Grid
         buttons[j][i].style.bottom = String((i * 37.5) + 5.5)+"px";
         buttons[j][i].style.right = String((700- (j * 37.5) + 7.5))+"px";
       
-        buttons[j][i].id = "button"+i+j;
+        buttons[j][i].id = "button"+i.toString().padStart(2,"0")+j.toString().padStart(2,"0");
         buttons[j][i].className = "matrixButtOff";
         buttons[j][i].addEventListener('mouseover',this.onMouseOver, false);
         buttons[j][i].addEventListener('mousedown',this.onMouseClick, false);

@@ -13,7 +13,7 @@ import updateUrl from "./urlUpdater.js"
   onOff.style.right =0;
   onOff.textContent = "PLAY";
   onOff.className = "playButton";
-  onOff.addEventListener('click',unmute, false);
+  onOff.addEventListener('click',unmute, true);
   document.getElementById("matrix").appendChild(onOff); 
   let playing = false;
   
@@ -62,6 +62,7 @@ import updateUrl from "./urlUpdater.js"
   let buttons = [];
   myGrid.createGrid(buttons);
 
+  window.addEventListener("statechange",updateGridStateInUrl);
   window.addEventListener("offsetchange",updateOffsetNote);
   window.addEventListener("octavechange",updateOctave);
   window.addEventListener("subdivisionchange",updateSubdivision);
@@ -148,7 +149,7 @@ import updateUrl from "./urlUpdater.js"
   loadState.className = "offsets";
   loadState.id = "loadState";
 
-  loadState.addEventListener('click',loadStateFunc, false);
+  loadState.addEventListener('click',loadStateFunc, true);
 
   document.getElementById("matrix").appendChild(loadState); 
  
@@ -161,9 +162,9 @@ import updateUrl from "./urlUpdater.js"
 
   saveState.textContent = "Save State";
   saveState.className = "offsets";
-  saveState.id = "loadState";
+  saveState.id = "saveState";
 
-  saveState.addEventListener('click',saveStateFunc, false);
+  saveState.addEventListener('click',saveStateFunc, true);
 
   document.getElementById("matrix").appendChild(saveState); 
 
@@ -216,12 +217,11 @@ import updateUrl from "./urlUpdater.js"
 
   function unmute(event)
   { 
+    event.stopPropagation();
     mySynth.createOscillators();
     mySynth.startOscillators();
     event.target.className = "playButtoff";
     event.target.textContent = "";
-    window.addEventListener("click",mouseClickOrUp);
-    window.addEventListener("mouseup",mouseClickOrUp);
     playing = true;
   }
 
@@ -291,58 +291,96 @@ import updateUrl from "./urlUpdater.js"
     scrubber.style.right = 800-95 + 'px';
   }
 
-  function mouseClickOrUp(event)
+  function updateGridStateInUrl(event) 
   {
-    // if(playing == true)
-    // {
-    //   let gridState = saveGridToUrl();
-    //   console.log("gridstate : " + gridState);
-    //   updateUrl("gridState", gridState);
-    // }
+    if(playing == true)
+    {
+      //console.log("inside if");
+      let myElement = document.getElementById(event.detail.idOfButtonPressed);
+      console.log("element id : " + myElement.id);
+      if(myElement.className == 'matrixButtOff')
+      {
+        myElement.className  = 'matrixButtOn';
+      }
+      else
+      {
+        myElement.className  = 'matrixButtOff';
+      }
+
+      let gridState = saveGridToUrl();
+      updateUrl("gridState", gridState);
+    }
   }
 
   function loadStateFunc(event)
   {
+    event.stopPropagation();
     const url = new URL(location);
-    let text = url.searchParams.get("gridState");
-    console.log("text from URL : " + text);
-    loadStateFromUrl(text);
+    url.searchParams.forEach(processUrlParam);
+    mySynth.updateAllConfig(octave,subdivisions,offsets);
+    mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
   }
 
-  
+  function processUrlParam(value , key)
+  {
+    switch(key)
+    {
+      case"gridState":
+      {
+        loadStateFromUrl(value);
+        break;
+      }
+      case "offset00":
+      case "offset01":
+      case "offset02":
+      case "offset03":
+      case "offset04":
+      case "offset05":
+      case "offset06":
+      case "offset07":
+      case "offset08":
+      case "offset09":
+      case "offset10":
+      case "offset11":
+      case "offset12":
+      case "offset13":
+      case "offset14":
+      case "offset15": 
+      {
+        let offsetIndex = Number(key.substring(6));
+        offsets[offsetIndex] = value;
+        break;
+      }
+      case "octaveDisplayText": 
+      {
+        octave = value;
+        break;
+      }
+      case "subdivisionsDisplayText": {
+        subdivisions = value;
+        break;
+      }
+    }
+  }
 
   function saveStateFunc(event)
   {
+    event.stopPropagation();
     let gridState = saveGridToUrl();
-    console.log("gridstate : " + gridState);
     updateUrl("gridState", gridState);
   }
 
-  // function saveStateToUrl(event)
-  // {
-  //   let gridState = saveGridToUrl();
-  //   console.log("gridstate : " + gridState);
-  //   updateUrl("gridState", gridState);
-  // }
 
   function loadStateFromUrl(text)
   {
-    console.log("input : " + text);
     let arrayX= text.split("X");
-    console.log("arrayX : " + arrayX);
     let stateInBinary = "";
 
     for(let myString of arrayX)
     {
-      console.log("myString : " + myString);
       let interm = parseInt(myString,36).toString(2).padStart(16,"0");
-      console.log("inter : " + interm);
       stateInBinary += parseInt(myString,36).toString(2).padStart(16,"0");
     }
-
-    console.log("stat : " +stateInBinary);
-    //let gridData = parseInt(text,36).toString(2);//.padStart(256,"0");
-    //console.log("gird state from URL : " + gridData);
     
     for (let i  = 0; i  < 16; i ++) 
     {
@@ -359,11 +397,6 @@ import updateUrl from "./urlUpdater.js"
         }                
     }
 
-    // let toReturn  = parseInt(gridData , 2).toString(36);
-    // console.log("binary grid data : " + gridData);
-
-    // console.log("string grid date  : " + toReturn);
-    // return toReturn;
   }
 
 
@@ -384,7 +417,6 @@ import updateUrl from "./urlUpdater.js"
           gridData+="0";
         }   
       } 
-      console.log("binary grid data " +  i + " : " + gridData);
       returnText +=parseInt(gridData , 2).toString(36) ;
 
       if(i != 15 ) 
@@ -397,7 +429,6 @@ import updateUrl from "./urlUpdater.js"
 
     let toReturn  = returnText;
 
-    console.log("string grid date  : " + toReturn);
     return toReturn;
   }
 
