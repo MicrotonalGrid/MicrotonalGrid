@@ -136,10 +136,10 @@ import updateUrl from "./urlUpdater.js"
 
   let loadState ;
   loadState = document.createElement("div");
-  loadState.style.bottom = String(90)+"px";
+  loadState.style.bottom = String(100)+"px";
   loadState.style.right = String(800-780)+"px";
   loadState.style.width = 100+"px";
-  //loadState.style.height = 50+"px";
+  loadState.style.height = 50+"px";
 
   loadState.textContent = "Load State";
   loadState.className = "offsets";
@@ -154,8 +154,8 @@ import updateUrl from "./urlUpdater.js"
   saveState.style.bottom = String(0)+"px";
   saveState.style.right = String(800-780)+"px";
   saveState.style.width = 100+"px";
-  saveState.style.height = 75+"px";
-
+  saveState.style.height = 100+"px";
+  saveState.style.filter= "invert(1)";
   saveState.textContent = "Save State Using Clipboard";
   saveState.className = "offsets";
   saveState.id = "saveState";
