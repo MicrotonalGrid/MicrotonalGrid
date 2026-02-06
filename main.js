@@ -64,6 +64,8 @@ import updateUrl from "./urlUpdater.js"
   window.addEventListener("offsetchange",updateOffsetNote);
   window.addEventListener("octavechange",updateOctave);
   window.addEventListener("subdivisionchange",updateSubdivision);
+  window.addEventListener("copy", copyPressed);
+  window.addEventListener("paste", pastePressed);
 
   let western;
   western = document.createElement("div");
@@ -163,6 +165,101 @@ import updateUrl from "./urlUpdater.js"
   saveState.addEventListener('click',saveStateFunc, true);
 
   document.getElementById("matrix").appendChild(saveState); 
+
+
+  // showShareBox here
+
+  let shareBox ;
+  shareBox = document.createElement("div");
+  shareBox.style.bottom = String(200)+"px";
+  shareBox.style.right = String(200)+"px";
+  shareBox.style.width = 400+"px";
+  shareBox.style.height = 300+"px";
+  shareBox.style.visibility = "hidden"; //can also be made visible/hidden
+  shareBox.style.background = "#9f5bda";
+  //shareBox.textContent = "Save State Using Clipboard";
+  shareBox.className = "offsets";
+  shareBox.id = "shareBox";
+
+  shareBox.addEventListener('click',showShareBox, true);
+
+  let shareBoxTitle;
+  shareBoxTitle = document.createElement("label");
+  //shareBoxTitle.style.bottom = String(0)+"px";
+  //shareBoxTitle.style.right = String(0)+"px";
+  //shareBox.style.width = 400+"px";
+  //shareBox.style.height = 300+"px";
+  //shareBox.style.visibility = "hidden"; //can also be made visible
+  //shareBox.style.background = "#9f5bda";
+  shareBoxTitle.textContent = "Save State Using Clipboard";
+  //shareBoxTitle.className = "offsets";
+  //shareBox.id = "shareBoxTitle";
+  shareBoxTitle.style.position = "relative";
+
+
+  let shareBoxText;  
+
+  shareBoxText = document.createElement("textarea");
+  shareBoxText.style.bottom = String(0)+"px";
+  shareBoxText.style.right = String(0)+"px";
+  shareBoxText.style.width = 300+"px";
+  shareBoxText.style.height = 200+"px";
+  shareBoxText.style.border = "solid" + "2px " + "black" ;
+  shareBoxText.style.background = "#b491d2";
+  shareBoxText.style.position = "relative";
+  shareBoxText.style.textWrap = "balance";
+  shareBoxText.id = "shareBoxInput";
+
+
+
+  
+  let shareBoxLoad;
+  shareBoxLoad = document.createElement("div");
+  shareBoxLoad.style.bottom = String(-10)+"px";
+  shareBoxLoad.style.right = String(-250)+"px";
+  shareBoxLoad.style.width = 100+"px";
+  shareBoxLoad.style.height = 50+"px";
+  //shareBox.style.visibility = "hidden"; //can also be made visible
+  shareBoxLoad.style.background = "#66269e";
+  shareBoxLoad.style.color = "#ffffff"
+  shareBoxLoad.textContent = "Load";
+  //shareBoxTitle.className = "offsets";
+  //shareBox.id = "shareBox";
+  shareBoxLoad.addEventListener('click',loadFromSaveBox, true);
+  shareBoxLoad.style.position = "relative";
+  shareBoxLoad.style.justifyContent = "center";
+  shareBoxLoad.style.display = "flex";
+  shareBoxLoad.style.alignItems = "center";
+
+  let shareBoxSave;
+  shareBoxSave = document.createElement("div");
+  shareBoxSave.style.bottom = String(40)+"px";
+  shareBoxSave.style.right = String(-50)+"px";
+  shareBoxSave.style.width = 100+"px";
+  shareBoxSave.style.height = 50+"px";
+  //shareBox.style.visibility = "hidden"; //can also be made visible
+  shareBoxSave.style.background = "#66269e";
+  shareBoxSave.style.color = "#ffffff"
+  shareBoxSave.textContent = "Close";
+  //shareBoxTitle.className = "offsets";
+  //shareBox.id = "shareBox";
+  shareBoxSave.addEventListener('click',closeSavebox, true);
+  shareBoxSave.style.position = "relative";
+  shareBoxSave.style.justifyContent = "center";
+  shareBoxSave.style.display = "flex";
+  shareBoxSave.style.alignItems = "center";
+
+
+
+  document.getElementById("matrix").appendChild(shareBox); 
+  document.getElementById("shareBox").appendChild(shareBoxTitle);
+  document.getElementById("shareBox").appendChild(shareBoxText);
+  document.getElementById("shareBox").appendChild(shareBoxLoad);
+  document.getElementById("shareBox").appendChild(shareBoxSave);
+
+
+
+  let hasUrlAccess = false;
 
   function arabicClick(event)
   {
@@ -303,7 +400,12 @@ import updateUrl from "./urlUpdater.js"
   {
     event.stopPropagation();
     loadStateFunc();
+    //let text;
+    //navigator.clipboard.readText().then((clipText) => (text = clipText));
+    //console.log(text);
   }
+
+
 
   function loadStateFunc()
   {
@@ -311,6 +413,26 @@ import updateUrl from "./urlUpdater.js"
     url.searchParams.forEach(processUrlParam);
     mySynth.updateAllConfig(octave,subdivisions,offsets);
     mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
+  }
+
+  function loadFromSaveBox()
+  {
+    // const url = new URL(location);
+    // url.searchParams.forEach(processUrlParam);
+    // mySynth.updateAllConfig(octave,subdivisions,offsets);
+    // mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
+    console.log("Load from save box pressed");
+  }
+
+  function closeSavebox()
+  {
+    // const url = new URL(location);
+    // url.searchParams.forEach(processUrlParam);
+    // mySynth.updateAllConfig(octave,subdivisions,offsets);
+    // mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
+    console.log("Load from save box pressed");
+    document.getElementById("shareBox").style.visibility = "hidden"; // XXXX
+
   }
 
   function processUrlParam(value , key)
@@ -355,12 +477,36 @@ import updateUrl from "./urlUpdater.js"
     }
   }
 
+  function showShareBox(event)
+  { 
+
+  }
+
+  function copyPressed(event)
+  {
+    if(hasUrlAccess == true)
+    {
+      navigator.clipboard.writeText(saveGridToUrl()); // copy states from url only
+  
+    }
+  }
+  function pastePressed(event)
+  {
+
+    if(hasUrlAccess == true)
+    {
+    console.log(event.clipboardData.getData("text")); 
+    }
+  }
+
   function saveStateFunc(event)
   {
     event.stopPropagation();
     let gridState = saveGridToUrl();
     updateUrl("gridState", gridState);
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(window.location.href); // put something here to check frames
+    document.getElementById("shareBoxInput").value = gridState;
+    document.getElementById("shareBox").style.visibility = "visible"; // XXXX
   }
 
 
