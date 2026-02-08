@@ -435,6 +435,24 @@ import updateUrl from "./urlUpdater.js"
 
   }
 
+  function generateSharecode()
+  {
+    let  shareCodeUpdated = '';
+    
+    shareCodeUpdated += octave.toString();
+    shareCodeUpdated += 'X';
+    shareCodeUpdated += subdivisions.toString();
+    shareCodeUpdated += 'X';
+
+    for(let i = 0; i<16 ; i++)  
+    {
+      shareCodeUpdated += offsets[i];
+      shareCodeUpdated += 'X';
+    }    
+    shareCodeUpdated +=saveGridToUrl();
+    return shareCodeUpdated;
+  }
+
   function processUrlParam(value , key)
   {
     switch(key)
@@ -505,7 +523,7 @@ import updateUrl from "./urlUpdater.js"
     let gridState = saveGridToUrl();
     updateUrl("gridState", gridState);
     navigator.clipboard.writeText(window.location.href); // put something here to check frames
-    document.getElementById("shareBoxInput").value = gridState;
+    document.getElementById("shareBoxInput").value = generateSharecode(); // gridState;
     document.getElementById("shareBox").style.visibility = "visible"; // XXXX
   }
 
