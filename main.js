@@ -392,7 +392,7 @@ import updateUrl from "./urlUpdater.js"
       }
 
       let gridState = saveGridToUrl();
-      updateUrl("gridState", gridState);
+      //updateUrl("gridState", gridState);
     }
   }
 
@@ -417,12 +417,66 @@ import updateUrl from "./urlUpdater.js"
 
   function loadFromSaveBox()
   {
+       returnObjectFromTextBox(document.getElementById("shareBoxInput").value);
     // const url = new URL(location);
     // url.searchParams.forEach(processUrlParam);
     // mySynth.updateAllConfig(octave,subdivisions,offsets);
     // mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
     console.log("Load from save box pressed");
   }
+
+
+    function returnObjectFromTextBox(textInBox) //todo, related to above.
+  {
+        //2X12X0X3X5X7X10X12X15X17X19X22X24X27X29X31X34X36X0X0X0X0X0X0X0X0X0X0X0X0X0X0X0X0
+
+        //2X12X0X3X5X7X10X12X15X17X19X22X24X27X29X31X34X36X0XsgX6bkX0X2e8X1hcXlcX0XqgwX2dcXcgX1kwX1kwX0X0X0
+      
+      // 3X13X0X2X3X5X6X8X9X11X12X13X15X16X18X19X21X22Xpa8Xcn4X6bkXcn4X6bkX35sX1kwX35sX1kwXsgXe8XsgXe8X74X3kX74
+        console.log("etneringthing");
+
+       let arrayX= textInBox.split("X"); // split input box code into array. 
+       // loop though array and assign into URL
+// for (let index = 0; index < array.length; index++) {
+//         let interm = parseInt(myString,36).toString(2).padStart(16,"0");
+//         stateInBinary += parseInt(myString,36).toString(2).padStart(16,"0");
+  
+// }
+      console.log("arrayX");
+      console.log(arrayX);
+      
+ 
+        updateUrl("octaveDisplayText", arrayX[0]);
+        updateUrl("subdivisionsDisplayText",  arrayX[1]);
+        //updateUrl("offset"+index, this.offsets[i]); // loop through offsets
+
+        for (let index = 2; index < 18; index++) 
+          {
+            let indexX = (index-2).toString().padStart(2,"0")
+
+            updateUrl("offset"+indexX, arrayX[index]); // loop through offsets
+
+        }
+
+            let gridState =  ""; //saveGridToUrl(); // unsplit from source and dump the whoe text. loop and concatenate?
+            //updateUrl("gridState", gridState);
+
+            for (let index = 18; index < 18+16; index++) 
+          {
+             //           let indexX = (index-18).toString().padStart(2,"0")
+
+           // updateUrl("offset"+indexX, arrayX[index]); // loop through offsets
+              gridState+= arrayX[index] ;
+              gridState+=  index < 18+16 ? "X" : ""; 
+        }
+        updateUrl("gridState", gridState);
+
+      // load gridstate into url how
+       //
+       loadStateFunc();
+
+  }
+
 
   function closeSavebox()
   {
@@ -455,8 +509,12 @@ import updateUrl from "./urlUpdater.js"
 
   function processUrlParam(value , key)
   {
+      console.log("key : " + key);
+      console.log("value : " + value);
+
     switch(key)
     {
+   
       case"gridState":
       {
         loadStateFromUrl(value);
@@ -501,31 +559,32 @@ import updateUrl from "./urlUpdater.js"
   }
 
   function copyPressed(event)
-  {
+  {/*
     if(hasUrlAccess == true)
     {
       navigator.clipboard.writeText(saveGridToUrl()); // copy states from url only
   
-    }
+    }*/
   }
   function pastePressed(event)
   {
-
+/*
     if(hasUrlAccess == true)
     {
     console.log(event.clipboardData.getData("text")); 
-    }
+    }*/
   }
 
   function saveStateFunc(event)
   {
     event.stopPropagation();
     let gridState = saveGridToUrl();
-    updateUrl("gridState", gridState);
-    navigator.clipboard.writeText(window.location.href); // put something here to check frames
+    //updateUrl("gridState", gridState);
+    //navigator.clipboard.writeText(window.location.href); // put something here to check frames
     document.getElementById("shareBoxInput").value = generateSharecode(); // gridState;
     document.getElementById("shareBox").style.visibility = "visible"; // XXXX
   }
+
 
 
   function loadStateFromUrl(text)
