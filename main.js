@@ -149,14 +149,14 @@ import updateUrl from "./urlUpdater.js"
 
   loadState.addEventListener('click',loadStateEvent, true);
 
-  document.getElementById("matrix").appendChild(loadState); 
+  //document.getElementById("matrix").appendChild(loadState); 
  
   let saveState ;
   saveState = document.createElement("div");
   saveState.style.bottom = String(0)+"px";
   saveState.style.right = String(800-780)+"px";
   saveState.style.width = 100+"px";
-  saveState.style.height = 100+"px";
+  saveState.style.height = 50+"px";
   saveState.style.filter= "invert(1)";
   saveState.textContent = "Share Dialog";
   saveState.className = "offsets";
@@ -174,7 +174,7 @@ import updateUrl from "./urlUpdater.js"
   shareBox.style.bottom = String(200)+"px";
   shareBox.style.right = String(200)+"px";
   shareBox.style.width = 400+"px";
-  shareBox.style.height = 300+"px";
+  shareBox.style.height = 200+"px";
   shareBox.style.visibility = "hidden"; //can also be made visible/hidden
   shareBox.style.background = "#9f5bda";
   //shareBox.textContent = "Save State Using Clipboard";
@@ -191,7 +191,7 @@ import updateUrl from "./urlUpdater.js"
   //shareBox.style.height = 300+"px";
   //shareBox.style.visibility = "hidden"; //can also be made visible
   //shareBox.style.background = "#9f5bda";
-  shareBoxTitle.textContent = "Copy to Share/Paste new state and load.";
+  shareBoxTitle.textContent = "Copy to Share/Paste new state & load";
   //shareBoxTitle.className = "offsets";
   //shareBox.id = "shareBoxTitle";
   shareBoxTitle.style.position = "relative";
