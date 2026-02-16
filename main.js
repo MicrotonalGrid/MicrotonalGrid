@@ -181,7 +181,7 @@ import updateUrl from "./urlUpdater.js"
   shareBox.className = "offsets";
   shareBox.id = "shareBox";
 
-  shareBox.addEventListener('click',showShareBox, true);
+  //shareBox.addEventListener('click',showShareBox, true);
 
   let shareBoxTitle;
   shareBoxTitle = document.createElement("label");
@@ -392,7 +392,7 @@ import updateUrl from "./urlUpdater.js"
       }
 
       let gridState = saveGridToUrl();
-      //updateUrl("gridState", gridState);
+      updateUrl("gridState", gridState);
     }
   }
 
@@ -521,10 +521,10 @@ import updateUrl from "./urlUpdater.js"
     }
   }
 
-  function showShareBox(event)
-  { 
+  //   function showShareBox(event)
+  // { 
 
-  }
+  // }
 
   function copyPressed(event)
   {/*
@@ -553,8 +553,6 @@ import updateUrl from "./urlUpdater.js"
     document.getElementById("shareBox").style.visibility = "visible"; // XXXX
   }
 
-
-
   function loadStateFromUrl(text)
   {
     let arrayX= text.split("X");
@@ -580,7 +578,6 @@ import updateUrl from "./urlUpdater.js"
           }   
         }                
     }
-
   }
 
 
