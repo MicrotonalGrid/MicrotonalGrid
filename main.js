@@ -158,7 +158,7 @@ import updateUrl from "./urlUpdater.js"
   saveState.style.width = 100+"px";
   saveState.style.height = 100+"px";
   saveState.style.filter= "invert(1)";
-  saveState.textContent = "Save State Using Clipboard";
+  saveState.textContent = "Share Dialog";
   saveState.className = "offsets";
   saveState.id = "saveState";
 
@@ -191,7 +191,7 @@ import updateUrl from "./urlUpdater.js"
   //shareBox.style.height = 300+"px";
   //shareBox.style.visibility = "hidden"; //can also be made visible
   //shareBox.style.background = "#9f5bda";
-  shareBoxTitle.textContent = "Save State Using Clipboard";
+  shareBoxTitle.textContent = "Copy to Share/Paste new state and load.";
   //shareBoxTitle.className = "offsets";
   //shareBox.id = "shareBoxTitle";
   shareBoxTitle.style.position = "relative";
@@ -203,7 +203,7 @@ import updateUrl from "./urlUpdater.js"
   shareBoxText.style.bottom = String(0)+"px";
   shareBoxText.style.right = String(0)+"px";
   shareBoxText.style.width = 300+"px";
-  shareBoxText.style.height = 200+"px";
+  shareBoxText.style.height = 100+"px";
   shareBoxText.style.border = "solid" + "2px " + "black" ;
   shareBoxText.style.background = "#b491d2";
   shareBoxText.style.position = "relative";
