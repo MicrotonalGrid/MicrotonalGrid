@@ -153,7 +153,7 @@ import updateUrl from "./urlUpdater.js"
  
   let saveState ;
   saveState = document.createElement("div");
-  saveState.style.bottom = String(0)+"px";
+  saveState.style.bottom = String(50)+"px";
   saveState.style.right = String(800-780)+"px";
   saveState.style.width = 100+"px";
   saveState.style.height = 50+"px";
