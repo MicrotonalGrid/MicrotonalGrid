@@ -101,7 +101,7 @@ import updateUrl from "./urlUpdater.js"
 
   arabic.id = "arabic";
   arabic.className = "offsets";
-  arabic.textContent = "Arabic 24"  ;
+  arabic.textContent = "Arabic"  ;
   arabic.style.textDecoration = "underline";
   arabic.addEventListener('mousedown',arabicClick, false);
   document.getElementById("matrix").appendChild(arabic); 
@@ -191,7 +191,7 @@ import updateUrl from "./urlUpdater.js"
   //shareBox.style.height = 300+"px";
   //shareBox.style.visibility = "hidden"; //can also be made visible
   //shareBox.style.background = "#9f5bda";
-  shareBoxTitle.textContent = "Copy to Share/Paste new state & load";
+  shareBoxTitle.textContent = "Copy to Share/Paste New State";
   //shareBoxTitle.className = "offsets";
   //shareBox.id = "shareBoxTitle";
   shareBoxTitle.style.position = "relative";
