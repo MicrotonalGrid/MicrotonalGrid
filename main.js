@@ -64,6 +64,8 @@ import updateUrl from "./urlUpdater.js"
   window.addEventListener("offsetchange",updateOffsetNote);
   window.addEventListener("octavechange",updateOctave);
   window.addEventListener("subdivisionchange",updateSubdivision);
+  window.addEventListener("copy", copyPressed);
+  window.addEventListener("paste", pastePressed);
 
   let western;
   western = document.createElement("div");
@@ -99,7 +101,7 @@ import updateUrl from "./urlUpdater.js"
 
   arabic.id = "arabic";
   arabic.className = "offsets";
-  arabic.textContent = "Arabic 24"  ;
+  arabic.textContent = "Arabic"  ;
   arabic.style.textDecoration = "underline";
   arabic.addEventListener('mousedown',arabicClick, false);
   document.getElementById("matrix").appendChild(arabic); 
@@ -136,10 +138,10 @@ import updateUrl from "./urlUpdater.js"
 
   let loadState ;
   loadState = document.createElement("div");
-  loadState.style.bottom = String(90)+"px";
+  loadState.style.bottom = String(100)+"px";
   loadState.style.right = String(800-780)+"px";
   loadState.style.width = 100+"px";
-  //loadState.style.height = 50+"px";
+  loadState.style.height = 50+"px";
 
   loadState.textContent = "Load State";
   loadState.className = "offsets";
@@ -147,22 +149,117 @@ import updateUrl from "./urlUpdater.js"
 
   loadState.addEventListener('click',loadStateEvent, true);
 
-  document.getElementById("matrix").appendChild(loadState); 
+  //document.getElementById("matrix").appendChild(loadState); 
  
   let saveState ;
   saveState = document.createElement("div");
-  saveState.style.bottom = String(0)+"px";
+  saveState.style.bottom = String(50)+"px";
   saveState.style.right = String(800-780)+"px";
   saveState.style.width = 100+"px";
-  saveState.style.height = 75+"px";
-
-  saveState.textContent = "Save State Using Clipboard";
+  saveState.style.height = 50+"px";
+  saveState.style.filter= "invert(1)";
+  saveState.textContent = "Share Dialog";
   saveState.className = "offsets";
   saveState.id = "saveState";
 
   saveState.addEventListener('click',saveStateFunc, true);
 
   document.getElementById("matrix").appendChild(saveState); 
+
+
+  // showShareBox here
+
+  let shareBox ;
+  shareBox = document.createElement("div");
+  shareBox.style.bottom = String(200)+"px";
+  shareBox.style.right = String(200)+"px";
+  shareBox.style.width = 400+"px";
+  shareBox.style.height = 200+"px";
+  shareBox.style.visibility = "hidden"; //can also be made visible/hidden
+  shareBox.style.background = "#9f5bda";
+  //shareBox.textContent = "Save State Using Clipboard";
+  shareBox.className = "offsets";
+  shareBox.id = "shareBox";
+
+  //shareBox.addEventListener('click',showShareBox, true);
+
+  let shareBoxTitle;
+  shareBoxTitle = document.createElement("label");
+  //shareBoxTitle.style.bottom = String(0)+"px";
+  //shareBoxTitle.style.right = String(0)+"px";
+  //shareBox.style.width = 400+"px";
+  //shareBox.style.height = 300+"px";
+  //shareBox.style.visibility = "hidden"; //can also be made visible
+  //shareBox.style.background = "#9f5bda";
+  shareBoxTitle.textContent = "Copy to Share/Paste New State";
+  //shareBoxTitle.className = "offsets";
+  //shareBox.id = "shareBoxTitle";
+  shareBoxTitle.style.position = "relative";
+
+
+  let shareBoxText;  
+
+  shareBoxText = document.createElement("textarea");
+  shareBoxText.style.bottom = String(0)+"px";
+  shareBoxText.style.right = String(0)+"px";
+  shareBoxText.style.width = 300+"px";
+  shareBoxText.style.height = 100+"px";
+  shareBoxText.style.border = "solid" + "2px " + "black" ;
+  shareBoxText.style.background = "#b491d2";
+  shareBoxText.style.position = "relative";
+  shareBoxText.style.textWrap = "balance";
+  shareBoxText.id = "shareBoxInput";
+
+
+
+  
+  let shareBoxLoad;
+  shareBoxLoad = document.createElement("div");
+  shareBoxLoad.style.bottom = String(-10)+"px";
+  shareBoxLoad.style.right = String(-250)+"px";
+  shareBoxLoad.style.width = 100+"px";
+  shareBoxLoad.style.height = 50+"px";
+  //shareBox.style.visibility = "hidden"; //can also be made visible
+  shareBoxLoad.style.background = "#66269e";
+  shareBoxLoad.style.color = "#ffffff"
+  shareBoxLoad.textContent = "Load";
+  //shareBoxTitle.className = "offsets";
+  //shareBox.id = "shareBox";
+  shareBoxLoad.addEventListener('click',loadFromSaveBox, true);
+  shareBoxLoad.style.position = "relative";
+  shareBoxLoad.style.justifyContent = "center";
+  shareBoxLoad.style.display = "flex";
+  shareBoxLoad.style.alignItems = "center";
+
+  let shareBoxSave;
+  shareBoxSave = document.createElement("div");
+  shareBoxSave.style.bottom = String(40)+"px";
+  shareBoxSave.style.right = String(-50)+"px";
+  shareBoxSave.style.width = 100+"px";
+  shareBoxSave.style.height = 50+"px";
+  //shareBox.style.visibility = "hidden"; //can also be made visible
+  shareBoxSave.style.background = "#66269e";
+  shareBoxSave.style.color = "#ffffff"
+  shareBoxSave.textContent = "Close";
+  //shareBoxTitle.className = "offsets";
+  //shareBox.id = "shareBox";
+  shareBoxSave.addEventListener('click',closeSavebox, true);
+  shareBoxSave.style.position = "relative";
+  shareBoxSave.style.justifyContent = "center";
+  shareBoxSave.style.display = "flex";
+  shareBoxSave.style.alignItems = "center";
+
+
+
+  document.getElementById("matrix").appendChild(shareBox); 
+  document.getElementById("shareBox").appendChild(shareBoxTitle);
+  document.getElementById("shareBox").appendChild(shareBoxText);
+  document.getElementById("shareBox").appendChild(shareBoxLoad);
+  document.getElementById("shareBox").appendChild(shareBoxSave);
+
+
+
+  let hasUrlAccess = false;
 
   function arabicClick(event)
   {
@@ -303,7 +400,12 @@ import updateUrl from "./urlUpdater.js"
   {
     event.stopPropagation();
     loadStateFunc();
+    //let text;
+    //navigator.clipboard.readText().then((clipText) => (text = clipText));
+    //console.log(text);
   }
+
+
 
   function loadStateFunc()
   {
@@ -313,10 +415,74 @@ import updateUrl from "./urlUpdater.js"
     mySynthDisplay.updateDisplays(octave,subdivisions,offsets);
   }
 
+  function loadFromSaveBox()
+  {
+    returnObjectFromTextBox(document.getElementById("shareBoxInput").value);
+    console.log("Load from save box complete");
+  }
+
+
+  function returnObjectFromTextBox(textInBox) //todo, related to above.
+  {
+    console.log("etneringthing");
+
+    let arrayX= textInBox.split("X"); // split input box code into array. 
+
+    console.log("arrayX");
+    console.log(arrayX);
+
+    updateUrl("octaveDisplayText", arrayX[0]);
+    updateUrl("subdivisionsDisplayText",  arrayX[1]);
+    
+    for (let index = 2; index < 18; index++) 
+    {
+      let indexX = (index-2).toString().padStart(2,"0");
+      updateUrl("offset"+indexX, arrayX[index]); // loop through offsets
+    }
+
+    let gridState =  "";
+    for (let index = 18; index < 18+16; index++) 
+    {
+      gridState+= arrayX[index] ;
+      gridState+=  index < 18+16 ? "X" : ""; 
+    }
+
+    updateUrl("gridState", gridState);
+    loadStateFunc();
+  }
+
+
+  function closeSavebox()
+  {
+    document.getElementById("shareBox").style.visibility = "hidden"; // XXXX
+  }
+
+  function generateSharecode()
+  {
+    let  shareCodeUpdated = '';
+    
+    shareCodeUpdated += octave.toString();
+    shareCodeUpdated += 'X';
+    shareCodeUpdated += subdivisions.toString();
+    shareCodeUpdated += 'X';
+
+    for(let i = 0; i<16 ; i++)  
+    {
+      shareCodeUpdated += offsets[i];
+      shareCodeUpdated += 'X';
+    }    
+    shareCodeUpdated +=saveGridToUrl();
+    return shareCodeUpdated;
+  }
+
   function processUrlParam(value , key)
   {
+    console.log("key : " + key);
+    console.log("value : " + value);
+
     switch(key)
     {
+   
       case"gridState":
       {
         loadStateFromUrl(value);
@@ -355,14 +521,37 @@ import updateUrl from "./urlUpdater.js"
     }
   }
 
+  //   function showShareBox(event)
+  // { 
+
+  // }
+
+  function copyPressed(event)
+  {/*
+    if(hasUrlAccess == true)
+    {
+      navigator.clipboard.writeText(saveGridToUrl()); // copy states from url only
+  
+    }*/
+  }
+  function pastePressed(event)
+  {
+/*
+    if(hasUrlAccess == true)
+    {
+    console.log(event.clipboardData.getData("text")); 
+    }*/
+  }
+
   function saveStateFunc(event)
   {
     event.stopPropagation();
     let gridState = saveGridToUrl();
     updateUrl("gridState", gridState);
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(window.location.href); // put something here to check frames
+    document.getElementById("shareBoxInput").value = generateSharecode(); // gridState;
+    document.getElementById("shareBox").style.visibility = "visible"; // XXXX
   }
-
 
   function loadStateFromUrl(text)
   {
@@ -389,7 +578,6 @@ import updateUrl from "./urlUpdater.js"
           }   
         }                
     }
-
   }
 
 
