@@ -62,11 +62,11 @@ export default class SwitchSynth
         );
     }
 
-    connectSpecificOscillator(indexOfOscillator)
+    connectSpecificOscillator(indexOfOscillator,numActiveNotes)
     {
         this.gainArray[indexOfOscillator].gain.setValueAtTime(0, this.audioCtx.currentTime);
 
-        this.gainArray[indexOfOscillator].gain.linearRampToValueAtTime(this.maxVol, this.audioCtx.currentTime + this.attackRamp);
+        this.gainArray[indexOfOscillator].gain.linearRampToValueAtTime(this.maxVol/numActiveNotes, this.audioCtx.currentTime + this.attackRamp);
         this.gainArray[indexOfOscillator].gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + this.noteLength - this.decaySlide);
 
         this.oscillatorState[indexOfOscillator] = true;

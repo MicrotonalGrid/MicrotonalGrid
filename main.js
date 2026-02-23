@@ -55,6 +55,7 @@ import updateUrl from "./urlUpdater.js"
   document.getElementById("matrix").appendChild(scrubber); 
 
   let currentIteration = 15;
+  let activeCellsPerColumn = Array(15).fill(0, 0); // todo : update this everytime matrixbuttOn happens
 
   let myGrid = new Grid();
   let buttons = [];
@@ -66,6 +67,8 @@ import updateUrl from "./urlUpdater.js"
   window.addEventListener("subdivisionchange",updateSubdivision);
   window.addEventListener("copy", copyPressed);
   window.addEventListener("paste", pastePressed);
+  window.addEventListener("updateGridTones",updateGridTonesEvent);
+
 
   let western;
   western = document.createElement("div");
@@ -326,14 +329,14 @@ import updateUrl from "./urlUpdater.js"
     liveState.textContent = conwayState;
   }
 
-  function unmuteSelectedNotes()
+  function unmuteSelectedNotes(currentIteration)
   {
     buttons[currentIteration].forEach(button => 
     {
       let currentIndex =   buttons[currentIteration].indexOf(button);
       if(button.className != 'matrixButtOff')
       {
-        mySynth.connectSpecificOscillator(currentIndex);
+        mySynth.connectSpecificOscillator(currentIndex,activeCellsPerColumn[currentIteration]);
       }
     });
   }
@@ -356,6 +359,8 @@ import updateUrl from "./urlUpdater.js"
       //updatePreviousIteration();
       resetBar();
     }
+    //console.log("current interation : " + currentIteration);
+    //console.log("activeCellsPerColumn currentIteration : " + activeCellsPerColumn[currentIteration]);
     unmuteSelectedNotes(currentIteration);
   }
 
@@ -394,6 +399,13 @@ import updateUrl from "./urlUpdater.js"
       let gridState = saveGridToUrl();
       updateUrl("gridState", gridState);
     }
+  }
+
+  function updateGridTonesEvent(event)
+  {
+    activeCellsPerColumn = event.detail.nextNotesQuantity;
+    console.log("after game oflife , active cells : ");
+    console.log( event.detail.nextNotesQuantity);
   }
 
   function loadStateEvent(event)
@@ -566,17 +578,19 @@ import updateUrl from "./urlUpdater.js"
     
     for (let i  = 0; i  < 16; i ++) 
     {
-        for (let j = 0; j < 16; j++) 
+      activeCellsPerColumn[i] = 0;
+      for (let j = 0; j < 16; j++) 
+      {
+        if(stateInBinary[ ( i*16  )+j ] == "1")
         {
-          if(stateInBinary[ ( i*16  )+j ] == "1")
-          {
-            buttons[i][j].className = "matrixButtOn";
-          }
-          else
-          {
-            buttons[i][j].className = "matrixButtOff";
-          }   
-        }                
+          activeCellsPerColumn[i]++;
+          buttons[i][j].className = "matrixButtOn";
+        }
+        else
+        {
+          buttons[i][j].className = "matrixButtOff";
+        }   
+      }                
     }
   }
 
@@ -587,17 +601,20 @@ import updateUrl from "./urlUpdater.js"
     let returnText = "";
     for (let i  = 0; i  < 16; i ++) 
     {
+      activeCellsPerColumn[i] = 0;
       for (let j = 0; j < 16; j++) 
-      {
+      {        
         if(buttons[i][j].className == "matrixButtOn")
         {
           gridData+="1";
+          activeCellsPerColumn[i]++;
         }
         else
         {
           gridData+="0";
         }   
       } 
+      
       returnText +=parseInt(gridData , 2).toString(36) ;
 
       if(i != 15 ) 

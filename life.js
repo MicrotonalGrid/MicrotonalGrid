@@ -1,6 +1,7 @@
 export default function Life(currentGrid)
 {
     let nextGrid = [];
+    let nextToneStates = [];
     function nextState(cell, iterationIndex, toneIndex)
     {
         function wrappedInt(rawInt)
@@ -60,15 +61,24 @@ export default function Life(currentGrid)
             return cell.className;
         }
     }
+        
+    nextToneStates = [];
 
     for (let column of currentGrid) 
     {       
         let nextColumn = [];
+        let nextNoteQuantity = 0;
         for (let square of column) 
-        {           
-            nextColumn.push( nextState(square, currentGrid.indexOf(column), column.indexOf(square) ) );
+        {
+            let nextStateToPush =   nextState(square, currentGrid.indexOf(column), column.indexOf(square) );         
+            nextColumn.push( nextStateToPush );
+            if(nextStateToPush == "matrixButtOn")
+            {
+                nextNoteQuantity++;
+            }
         }    
         nextGrid.push(nextColumn);
+        nextToneStates.push(nextNoteQuantity);
     }
 
     for (let i  = 0; i  < 16; i ++) 
@@ -78,4 +88,14 @@ export default function Life(currentGrid)
             currentGrid[i][j].className  = nextGrid[i][j];            
         }                
     }
+
+    const updateGridEvent = new CustomEvent("updateGridTones", { // better name
+        detail: {
+          nextNotesQuantity: nextToneStates
+        }
+      });
+      console.log("here");
+      console.log(nextToneStates);
+    window.dispatchEvent(updateGridEvent);
+    
 }
