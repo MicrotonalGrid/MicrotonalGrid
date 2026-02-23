@@ -329,14 +329,14 @@ import updateUrl from "./urlUpdater.js"
     liveState.textContent = conwayState;
   }
 
-  function unmuteSelectedNotes()
+  function unmuteSelectedNotes(currentIteration)
   {
     buttons[currentIteration].forEach(button => 
     {
       let currentIndex =   buttons[currentIteration].indexOf(button);
       if(button.className != 'matrixButtOff')
       {
-        mySynth.connectSpecificOscillator(currentIndex);
+        mySynth.connectSpecificOscillator(currentIndex,activeCellsPerColumn[currentIteration]);
       }
     });
   }
@@ -615,7 +615,6 @@ import updateUrl from "./urlUpdater.js"
         }   
       } 
       
-
       returnText +=parseInt(gridData , 2).toString(36) ;
 
       if(i != 15 ) 
