@@ -560,7 +560,7 @@ import updateUrl from "./urlUpdater.js"
     event.stopPropagation();
     let gridState = saveGridToUrl();
     updateUrl("gridState", gridState);
-    navigator.clipboard.writeText(window.location.href); // put something here to check frames
+    //navigator.clipboard.writeText(window.location.href); // put something here to check frames
     document.getElementById("shareBoxInput").value = generateSharecode(); // gridState;
     document.getElementById("shareBox").style.visibility = "visible"; // XXXX
   }
